@@ -627,9 +627,9 @@ const assistantProjects = [
   { year:"2022", title:"Evgeny Kissin in Wuppertal", artist:"Evgeny Kissin", label:"—", format:"Video Production", role:"Assistant Engineer" },
 ];
 
-const originalProducer = [...producerProjects.map(p => ({...p}))];
-const originalEngineer = [...engineerProjects.map(p => ({...p}))];
-const originalAssistant = [...assistantProjects.map(p => ({...p}))];
+const originalProducer = producerProjects.map(p => Object.assign({}, p));
+const originalEngineer = engineerProjects.map(p => Object.assign({}, p));
+const originalAssistant = assistantProjects.map(p => Object.assign({}, p));
 const sortState = {};
 
 function resetList(containerId) {
@@ -637,20 +637,18 @@ function resetList(containerId) {
   const projMap = { 'producer-list': producerProjects, 'engineer-list': engineerProjects, 'assistant-list': assistantProjects };
   const orig = origMap[containerId];
   const proj = projMap[containerId];
-  orig.forEach((p, i) => Object.assign(proj[i], p));
+  orig.forEach((p, i) => { proj[i] = Object.assign({}, p); });
   delete sortState[containerId];
-  document.querySelectorAll(`[onclick*="${containerId}"]`).forEach(t => t.classList.remove('sort-asc','sort-desc'));
+  document.querySelectorAll('.th').forEach(t => t.classList.remove('sort-asc','sort-desc'));
   closeDetail();
-  renderList(proj, containerId);
+  renderList(projMap[containerId], containerId);
 }
 
 function sortList(containerId, projects, key, thEl) {
   const current = sortState[containerId];
-  let asc = true;
-  if (current && current.key === key) asc = !current.asc;
+  let asc = (current && current.key === key) ? !current.asc : true;
   sortState[containerId] = { key, asc };
 
-  // Clear sort indicators in this table
   thEl.closest('.table-header').querySelectorAll('.th').forEach(t => {
     t.classList.remove('sort-asc', 'sort-desc');
   });
@@ -665,7 +663,6 @@ function sortList(containerId, projects, key, thEl) {
   closeDetail();
   renderList(projects, containerId);
 }
-
 let currentLang = 'en';
 let openRowEl = null;
 
