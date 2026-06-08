@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Impressum — Hari Yim</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0c0c0a;
+    --text: #e2ddd4;
+    --text-dim: rgba(226,221,212,0.45);
+    --text-faint: rgba(226,221,212,0.22);
+    --border: rgba(226,221,212,0.09);
+  }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 3rem;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .nav-name {
+    font-family: 'EB Garamond', serif;
+    font-size: 18px;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .nav-back {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--text-dim);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-back:hover { color: var(--text); }
+  .content {
+    max-width: 600px;
+    padding: 5rem 3rem;
+  }
+  h1 {
+    font-family: 'EB Garamond', serif;
+    font-size: 42px;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 3rem;
+    letter-spacing: -0.01em;
+  }
+  .block {
+    margin-bottom: 2.5rem;
+  }
+  .block-label {
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+  .block-content {
+    font-family: 'EB Garamond', serif;
+    font-size: 16px;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+  .block-content a {
+    color: var(--text-dim);
+    text-decoration: underline;
+    transition: color 0.2s;
+  }
+  .block-content a:hover { color: var(--text); }
+  .divider {
+    border: none;
+    border-top: 0.5px solid var(--border);
+    margin: 2.5rem 0;
+  }
+  footer {
+    padding: 2rem 3rem;
+    border-top: 0.5px solid var(--border);
+    font-size: 10px;
+    color: var(--text-faint);
+    letter-spacing: 0.08em;
+  }
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.25rem; }
+    .content { padding: 3rem 1.25rem; }
+    h1 { font-size: 32px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-name" href="index.html">Hari Yim</a>
+  <a class="nav-back" href="index.html">← Back</a>
+</nav>
+
+<div class="content">
+  <h1>Impressum</h1>
+
+  <div class="block">
+    <div class="block-label">Angaben gemäß § 5 TMG</div>
+    <div class="block-content">
+      Hari Yim<br>
+      Behaimstraße 43<br>
+      13086 Berlin<br>
+      Germany
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-label">Kontakt</div>
+    <div class="block-content">
+      <a href="mailto:info@hariyim.com">info@hariyim.com</a>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-label">Berufsbezeichnung</div>
+    <div class="block-content">
+      Recording Producer / Balance Engineer<br>
+      Freiberufler
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="block">
+    <div class="block-label">Haftungsausschluss</div>
+    <div class="block-content">
+      Die Inhalte dieser Website wurden mit größtmöglicher Sorgfalt erstellt. 
+      Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte kann jedoch 
+      keine Gewähr übernommen werden. Als Diensteanbieter bin ich gemäß § 7 Abs. 1 
+      TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen 
+      verantwortlich.
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-label">Urheberrecht</div>
+    <div class="block-content">
+      Die durch den Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten 
+      unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, 
+      Verbreitung und jede Art der Verwertung außerhalb der Grenzen des 
+      Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors 
+      bzw. Erstellers.
+    </div>
+  </div>
+</div>
+
+<footer>© Hari Yim — hariyim.com</footer>
+
+</body>
+</html>
