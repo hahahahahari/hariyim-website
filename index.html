@@ -531,7 +531,7 @@
     </div>
     <div id="d-image-col" style="display:flex; align-items:flex-start;">
       <a id="d-image-link" href="#" target="_blank" rel="noopener" style="display:block; width:100%;">
-        <img id="d-image" src="" alt="" style="width:100%; aspect-ratio:1/1; object-fit:cover; border:0.5px solid rgba(226,221,212,0.08); cursor:pointer; display:none;">
+        <img id="d-image" src="" alt="" style="width:100%; aspect-ratio:1/1; object-fit:contain; background:#0f0f0d; cursor:pointer; display:none;">
         <div id="d-image-placeholder" style="width:100%; aspect-ratio:1/1; background:rgba(226,221,212,0.04); border:0.5px solid rgba(226,221,212,0.08); display:flex; align-items:center; justify-content:center;">
           <span style="font-size:10px; letter-spacing:0.12em; color:rgba(226,221,212,0.18);">NO IMAGE</span>
         </div>
@@ -579,9 +579,9 @@ const i18n = {
 
 const producerProjects = [
   { year:"2022", title:"Bach: The Six Cello Suites", artist:"Michiaki Ueno, cello", label:"La Dolce Volta", format:"CD Production", role:"Recording Producer / Balance Engineer", image:"https://www.ladolcevolta.com/wp-content/uploads/2022/09/LDV115.6_COVER-300x300-1.webp", link:"https://www.ladolcevolta.com/produit/bach-the-six-cello-suites/?lang=en" },
-  { year:"2026", title:"WDR Sinfonieorchester Köln", artist:"Andris Poga, conductor\nDaniel Müller-Schott, cello\nSarang Seohyun Kim, violin", label:"WDR", format:"TV Production", role:"Recording Producer / Balance Engineer", link:"https://www.youtube.com/watch?v=0xPiaP8m7-U" },
+  { year:"2026", title:"WDR Sinfonieorchester Köln", artist:"Andris Poga, conductor\nDaniel Müller-Schott, cello\nSarang Seohyun Kim, violin", label:"WDR", format:"TV Production", role:"Recording Producer / Balance Engineer", image:"images/wdr.jpg", link:"https://www.youtube.com/watch?v=0xPiaP8m7-U" },
   { year:"2026", title:"Wings of Renaissance", artist:"Violetta Khachikyan, piano", label:"Oehms Classics", format:"CD Production", role:"Recording Producer / Balance Engineer", image:"https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/4a/db/ad/4adbad8f-ffae-9095-8042-23b191cc7004/4260330917478.png/600x600bb.jpg", link:"https://classical.music.apple.com/kr/album/1874275744" },
-  { year:"2026", title:"Once Heard, Long Forgotten", artist:"Jinwoo Lee, violin\nEunice Kim, piano", label:"Navona Records", format:"CD Production", role:"Recording Producer / Balance Engineer", image:"https://www.navonarecords.com/wp-content/uploads/NV6852.jpg", link:"https://www.navonarecords.com/catalog/nv6852/" },
+  { year:"2026", title:"Once Heard, Long Forgotten", artist:"Jinwoo Lee, violin\nEunice Kim, piano", label:"Navona Records", format:"CD Production", role:"Recording Producer / Balance Engineer", image:"images/once_heard.jpg", link:"https://www.navonarecords.com/catalog/nv6852/" },
   { year:"2026", title:"Beethoven Violin Sonata Complete Series I", artist:"Jehye Lee, violin\nDasol Kim, piano", label:"—", format:"TV Production", role:"Recording Producer / Balance Engineer", image:"images/beethoven_violin_sonata.gif", link:"https://www.youtube.com/watch?v=GttcWcli5fc" },
   { year:"2025", title:"Michiaki Ueno: Origin", artist:"Michiaki Ueno, cello", label:"La Dolce Volta", format:"CD Production", role:"Recording Producer / Balance Engineer", image:"https://www.ladolcevolta.com/wp-content/uploads/2025/10/LDV140_COVER-ITUNES-scaled.jpg", link:"https://www.ladolcevolta.com/produit/origin/?lang=en" },
   { year:"2025", title:"My Beloved — Kinoshita Makiko", artist:"Shimon Yoshida, tenor\nDaichi Ikari, piano", label:"Nami Records", format:"CD Production", role:"Recording Producer / Balance Engineer", image:"images/kinoshita.jpg", link:"https://www.nami-records.co.jp/albums/wwcc8040.html" },
@@ -591,40 +591,40 @@ const producerProjects = [
   { year:"2024–2025", title:"Spielende Insel — Chambermusic Project Berlin", artist:"Spielende Insel", label:"—", format:"Live Concert Recording", role:"Recording Producer / Balance Engineer" },
   { year:"2024", title:"Waldensemble: SLAVIC", artist:"Waldensemble", label:"—", format:"TV Production", role:"Recording Producer / Balance Engineer", image:"images/slavic.jpg" },
   { year:"2024", title:"Beethoven Variations for Violoncello and Piano", artist:"Jungin Huh, cello\nIlya Rashkovskiy, piano", label:"Sony", format:"CD Production", role:"Recording Producer / Balance Engineer", image:"images/beethoven_variations.jpg" },
-  { year:"2024", title:"Respighi: Gli Uccelli — Stolen Childhoods", artist:"Oksana Lyniv\nYouth Symphony Orchestra of Ukraine", label:"—", format:"Live Recording", role:"Recording Producer / Balance Engineer" },
-  { year:"2024", title:'V. Vakulenko / E. Orkin "Daddy\'s Book"', artist:"Oksana Lyniv", label:"—", format:"Video Production", role:"Balance Engineer" },
+  { year:"2024", title:"Respighi: Gli Uccelli — Stolen Childhoods", artist:"Oksana Lyniv\nYouth Symphony Orchestra of Ukraine", label:"—", format:"Live Recording", role:"Recording Producer / Balance Engineer", image:"images/respighi.png" },
+  { year:"2024", title:'V. Vakulenko / E. Orkin "Daddy\'s Book"', artist:"Oksana Lyniv", label:"—", format:"Video Production", role:"Balance Engineer", image:"images/daddys_book.png" },
   { year:"2024", title:"Tafelmusik x Rachel Podger — 35th Eagonconcert", artist:"Rachel Podger\nTafelmusik", label:"—", format:"TV Production", role:"Recording Producer / Balance Engineer", image:"images/tafelmusik.jpg" },
   { year:"2024", title:"Goldberg Variationen", artist:"Marcel Mok", label:"ars produktion", format:"CD Production", role:"Recording Producer / Balance Engineer", image:"https://imusic.b-cdn.net/images/item/original/128/4260052385128.jpg", link:"https://www.ars-produktion.de/Marcel_Mok_BachGoldberg_Variationen/topic/Neuheiten/shop_art_id/918/tpl/shop_article_detail" },
   { year:"2023", title:"Beethoven: Complete Sonatas for Piano and Cello", artist:"Jungin Huh, cello\nIlya Rashkovskiy, piano", label:"Sony", format:"CD Production", role:"Recording Producer / Balance Engineer", image:"images/beethoven_complete_sonatas.jpg", link:"https://open.spotify.com/track/2pvNS5JmEn1PG2jYY13kj8" },
   { year:"2023", title:"REMINISCENCE: Schubert works for violin and piano", artist:"Jinsu Park, violin\nJeong Heum Yeon, piano", label:"Sony", format:"CD Production", role:"Recording Producer / Balance Engineer", image:"images/reminiscence.jpg", link:"https://open.spotify.com/album/6STIwez4fhKqtBnc2RDj0M" },
-  { year:"2023", title:"Hubarenko: Chamber Symphony No. 1", artist:"Oksana Lyniv\nAndrii Murza\nYouth Orchestra of Ukraine", label:"—", format:"Video Production", role:"Recording Producer / Balance Engineer" },
-  { year:"2023", title:"Verklärte Nacht Op. 4 — Schoenberg", artist:"Waldensemble", label:"—", format:"Video Production", role:"Recording Producer / Balance Engineer" },
-  { year:"2022", title:"Mussorgsky: Pictures at an Exhibition", artist:"Waldensemble", label:"—", format:"Video Production", role:"Recording Producer / Balance Engineer" },
+  { year:"2023", title:"Hubarenko: Chamber Symphony No. 1", artist:"Oksana Lyniv\nAndrii Murza\nYouth Orchestra of Ukraine", label:"—", format:"Video Production", role:"Recording Producer / Balance Engineer", image:"images/hubarenko.jpg" },
+  { year:"2023", title:"Verklärte Nacht Op. 4 — Schoenberg", artist:"Waldensemble", label:"—", format:"Video Production", role:"Recording Producer / Balance Engineer", image:"images/verklarte_nacht.jpg" },
+  { year:"2022", title:"Mussorgsky: Pictures at an Exhibition", artist:"Waldensemble", label:"—", format:"Video Production", role:"Recording Producer / Balance Engineer", image:"images/mussorgsky.jpg" },
   { year:"2022", title:"Beethoven: Symphony No. 2", artist:"Jürgen Bruns\nKammersymphonie Berlin", label:"—", format:"Video Production", role:"Recording Producer / Balance Engineer" },
   { year:"2021", title:"SCHUBERT & BRAHMS", artist:"Jungin Huh, cello\nIlya Rashkovskiy, piano", label:"Sony", format:"CD Production", role:"Recording Producer / Balance Engineer", image:"images/schubert_brahms.jpg" },
   { year:"2021", title:"Ton für Ton", artist:"Oksana Lyniv\nYouth Symphony Orchestra of Ukraine", label:"Festival Junger Künstler Bayreuth", format:"CD Production", role:"Recording Producer / Balance Engineer", image:"images/ton_fuer_ton.jpg", link:"https://www.kulturbrief.de/youth-symphony-orchestra-of-ukraine-ton-fuer-ton/" },
-  { year:"2021", title:"Tchaikovsky: Souvenir de Florence", artist:"Waldensemble\nHolly Hyun Choe", label:"—", format:"Video Production", role:"Recording Producer / Balance Engineer" },
+  { year:"2021", title:"Tchaikovsky: Souvenir de Florence", artist:"Waldensemble\nHolly Hyun Choe", label:"—", format:"Video Production", role:"Recording Producer / Balance Engineer", image:"images/tchaikovsky_souvenir.jpg" },
   { year:"2020", title:"Hollywood Romance", artist:"Yoonie Han", label:"Universal Music Korea", format:"CD Production", role:"Recording Producer", image:"images/hollywood_romance.jpg" },
 ];
 
 const engineerProjects = [
-  { year:"2026", title:"Galakonzert aus Salzburg — Musik der Romantik", artist:"Salzburg Wind Philharmonic", label:"—", format:"CD / Video Production", role:"Recording Engineer" },
-  { year:"2025", title:"Salzburg Wind Philharmonic: Happy Birthday, Johann Strauss!", artist:"Salzburg Wind Philharmonic", label:"—", format:"CD / Video Production", role:"Recording Engineer" },
+  { year:"2026", title:"Galakonzert aus Salzburg — Musik der Romantik", artist:"Salzburg Wind Philharmonic", label:"—", format:"CD / Video Production", role:"Recording Engineer", image:"images/galakonzert_salzburg.jpg" },
+  { year:"2025", title:"Salzburg Wind Philharmonic: Happy Birthday, Johann Strauss!", artist:"Salzburg Wind Philharmonic", label:"—", format:"CD / Video Production", role:"Recording Engineer", image:"images/salzburg_wind.jpg" },
 ];
 
 const assistantProjects = [
   { year:"2023", title:"Bruckner: Symphony No. 9", artist:"Christian Thielemann, conductor\nWiener Philharmoniker", label:"Sony Classical", format:"CD / Video Production", role:"Assistant Engineer", image:"https://cdn-p.smehost.net/sites/374be6422f2b494ab9128079a4bd7dfd/logos/bruckner09_digital.jpg", link:"https://www.sonyclassical.com/releases/releases-details/bruckner-symphony-no-9-in-d-minor-wab-109-edition-nowak-2" },
-  { year:"2025", title:"Berliner Philharmoniker New Year's Eve Concert 2026", artist:"Kirill Petrenko\nBenjamin Bernheim\nBerliner Philharmoniker", label:"Berliner Philharmoniker", format:"TV Production", role:"Assistant Engineer", link:"https://www.digitalconcerthall.com/en/concert/56381" },
-  { year:"2024", title:"Berliner Philharmoniker New Year's Eve Concert 2025", artist:"Kirill Petrenko, conductor\nBerliner Philharmoniker", label:"Berliner Philharmoniker", format:"TV Production", role:"Assistant Engineer", link:"https://www.digitalconcerthall.com/en/concert/55638" },
+  { year:"2025", title:"Berliner Philharmoniker New Year's Eve Concert 2025", artist:"Kirill Petrenko\nBenjamin Bernheim\nBerliner Philharmoniker", label:"Berliner Philharmoniker", format:"TV Production", role:"Assistant Engineer", link:"https://www.digitalconcerthall.com/en/concert/56381" },
+  { year:"2024", title:"Berliner Philharmoniker New Year's Eve Concert 2024", artist:"Kirill Petrenko, conductor\nBerliner Philharmoniker", label:"Berliner Philharmoniker", format:"TV Production", role:"Assistant Engineer", link:"https://www.digitalconcerthall.com/en/concert/55638" },
   { year:"2023", title:"Salzburger Festspiele: Christian Thielemann / Wiener Philharmoniker / Wiener Singverein / Elsa Dreisig / Michael Volle", artist:"Christian Thielemann, conductor\nWiener Philharmoniker\nWiener Singverein", label:"Unitel Edition / Mezzo", format:"TV Production", role:"Assistant Engineer", image:"images/brahms_requiem.jpg", link:"https://www.mezzo.tv/fr/Classique/Wiener-Philharmoniker-Christian-Thielemann-Brahms-Ein-Deutsches-Requiem-18426" },
-  { year:"2023", title:"Evgeny Kissin: Bach, Mozart, Chopin, Rachmaninoff", artist:"Evgeny Kissin", label:"—", format:"Video Production", role:"Assistant Engineer" },
-  { year:"2026", title:"Nurejew", artist:"Staatsballett Berlin", label:"Arte", format:"Video Production", role:"Assistant Engineer" },
-  { year:"2025", title:"R. Strauss: Die Schweigsame Frau", artist:"Christian Thielemann, conductor\nStaatskapelle Berlin\nStaatsoper Unter den Linden Berlin", label:"Unitel", format:"Live Video Production", role:"Assistant Engineer" },
-  { year:"2024", title:"Leipziger Ballett: Tchaikovsky", artist:"Oper Leipzig", label:"MEZZO", format:"Video Production", role:"Assistant Engineer" },
-  { year:"2023", title:"Salzburger Festspiele: Daniil Trifonov", artist:"Daniil Trifonov", label:"Stage Plus", format:"Live Recording / Video Production", role:"Assistant Engineer" },
-  { year:"2023", title:"Salzburger Festspiele: Hadelich / Nelsons / Wiener Philharmoniker", artist:"Augustin Hadelich\nAndris Nelsons\nWiener Philharmoniker", label:"Stage Plus / Medici TV", format:"Live Recording / Video Production", role:"Assistant Engineer" },
-  { year:"2022", title:"Salzburger Festspiele: Lang Lang / Barenboim / West-Eastern Divan", artist:"Lang Lang\nDaniel Barenboim\nWest-Eastern Divan Orchestra", label:"—", format:"Live Recording / Video Production", role:"Assistant Engineer" },
-  { year:"2022", title:"Evgeny Kissin in Wuppertal", artist:"Evgeny Kissin", label:"—", format:"Video Production", role:"Assistant Engineer" },
+  { year:"2023", title:"Evgeny Kissin: Bach, Mozart, Chopin, Rachmaninoff", artist:"Evgeny Kissin", label:"—", format:"Video Production", role:"Assistant Engineer", image:"images/kissin_bach.png" },
+  { year:"2026", title:"Nurejew", artist:"Staatsballett Berlin", label:"Arte", format:"Video Production", role:"Assistant Engineer", image:"images/nurejew.webp" },
+  { year:"2025", title:"R. Strauss: Die Schweigsame Frau", artist:"Christian Thielemann, conductor\nStaatskapelle Berlin\nStaatsoper Unter den Linden Berlin", label:"Unitel", format:"Live Video Production", role:"Assistant Engineer", image:"images/schweigsame_frau.jpg" },
+  { year:"2024", title:"Leipziger Ballett: Tchaikovsky", artist:"Oper Leipzig", label:"MEZZO", format:"Video Production", role:"Assistant Engineer", image:"images/leipziger_ballett.jpg" },
+  { year:"2023", title:"Salzburger Festspiele: Daniil Trifonov", artist:"Daniil Trifonov", label:"Stage Plus", format:"Live Recording / Video Production", role:"Assistant Engineer", image:"images/salzburger_festspiele.png" },
+  { year:"2023", title:"Salzburger Festspiele: Hadelich / Nelsons / Wiener Philharmoniker", artist:"Augustin Hadelich\nAndris Nelsons\nWiener Philharmoniker", label:"Stage Plus / Medici TV", format:"Live Recording / Video Production", role:"Assistant Engineer", image:"images/salzburger_festspiele.png" },
+  { year:"2022", title:"Salzburger Festspiele: Lang Lang / Barenboim / West-Eastern Divan", artist:"Lang Lang\nDaniel Barenboim\nWest-Eastern Divan Orchestra", label:"—", format:"Live Recording / Video Production", role:"Assistant Engineer", image:"images/salzburger_festspiele.png" },
+  { year:"2022", title:"Evgeny Kissin in Wuppertal", artist:"Evgeny Kissin", label:"—", format:"Video Production", role:"Assistant Engineer", image:"images/kissin_wuppertal.png" },
 ];
 
 const originalProducer = producerProjects.map(p => Object.assign({}, p));
