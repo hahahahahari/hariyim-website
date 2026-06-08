@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hari Yim — Recording Producer / Balance Engineer</title>
+<meta name="description" content="Hari Yim — Recording Producer and Balance Engineer based in Berlin and Korea.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0c0c0a;
+    --bg2: #141412;
+    --text: #e2ddd4;
+    --text-dim: rgba(226,221,212,0.45);
+    --text-faint: rgba(226,221,212,0.22);
+    --border: rgba(226,221,212,0.09);
+    --border-hover: rgba(226,221,212,0.18);
+    --accent: #c8b89a;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--bg);
+    border-bottom: 0.5px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 3rem;
+  }
+
+  .nav-name {
+    font-family: 'EB Garamond', serif;
+    font-size: 18px;
+    letter-spacing: 0.04em;
+    color: var(--text);
+    font-weight: 400;
+  }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+  }
+
+  .nav-links a {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--text-dim);
+    text-decoration: none;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--text); }
+
+  .lang-switcher {
+    display: flex;
+    gap: 0.3rem;
+    border: 0.5px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .lang-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    padding: 4px 9px;
+    background: transparent;
+    border: none;
+    color: var(--text-faint);
+    cursor: pointer;
+    transition: all 0.2s;
+    border-right: 0.5px solid var(--border);
+  }
+
+  .lang-btn:last-child { border-right: none; }
+  .lang-btn:hover { color: var(--text); background: var(--bg2); }
+  .lang-btn.active { color: var(--text); background: var(--bg2); }
+
+  /* HERO */
+  .hero {
+    padding: 7rem 3rem 5rem;
+    border-bottom: 0.5px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .hero::before {
+    content: '';
+  }
+
+  .hero-image {
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    object-position: 30% center;
+    filter: grayscale(15%);
+    border: 0.5px solid rgba(226,221,212,0.08);
+  }
+
+  /* HERO NAME */
+  .hero-name {
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-role {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-tagline {
+    font-family: 'EB Garamond', serif;
+    font-size: 17px;
+    font-style: normal;
+    color: rgba(226,221,212,0.38);
+    margin-top: 1.5rem;
+    letter-spacing: 0.03em;
+  }
+
+  .hero-location {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+  }
+
+  /* SECTION HEADER */
+  .section-header {
+    padding: 2rem 3rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .section-title {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+  }
+
+  .section-meta {
+    font-size: 10px;
+    color: var(--text-faint);
+    letter-spacing: 0.08em;
+  }
+
+  /* CATEGORY BLOCK */
+  .category {
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .category-label {
+    padding: 1.25rem 3rem;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    text-transform: uppercase;
+    border-bottom: 0.5px solid var(--border);
+    background: var(--bg2);
+  }
+
+  /* PROJECT TABLE */
+  .project-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .project-row {
+    display: grid;
+    grid-template-columns: 80px 1fr 200px 140px 140px;
+    border-bottom: 0.5px solid var(--border);
+    cursor: pointer;
+    transition: background 0.15s;
+    padding: 0 3rem;
+    align-items: center;
+    min-height: 52px;
+  }
+
+  .project-row:hover { background: var(--bg2); }
+  .project-row:hover .row-arrow { opacity: 1; transform: translate(3px, -3px); }
+  .project-row:last-child { border-bottom: none; }
+
+  .row-year {
+    font-size: 11px;
+    color: var(--text-faint);
+    letter-spacing: 0.06em;
+    padding: 0.9rem 0;
+  }
+
+  .row-title {
+    font-family: 'EB Garamond', serif;
+    font-size: 16px;
+    color: var(--text);
+    padding: 0.9rem 1rem 0.9rem 0;
+    line-height: 1.35;
+  }
+
+  .row-artist {
+    font-size: 11px;
+    color: var(--text-dim);
+    padding: 0.9rem 1rem 0.9rem 0;
+    line-height: 1.4;
+  }
+
+  .row-label {
+    font-size: 11px;
+    color: var(--text-faint);
+    padding: 0.9rem 1rem 0.9rem 0;
+    letter-spacing: 0.04em;
+  }
+
+  .row-format {
+    font-size: 10px;
+    color: var(--text-faint);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.9rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .row-arrow {
+    font-size: 12px;
+    color: var(--text-faint);
+    opacity: 0;
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+
+  /* TABLE HEADER */
+  .table-header {
+    display: grid;
+    grid-template-columns: 80px 1fr 200px 140px 140px;
+    padding: 0.75rem 3rem;
+    border-bottom: 0.5px solid var(--border);
+    background: var(--bg);
+  }
+
+  .th {
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.15s;
+  }
+  .th:hover { color: var(--text-dim); }
+  .th.sort-asc::after { content: " ↑"; }
+  .th.sort-desc::after { content: " ↓"; }
+
+  /* DETAIL PANEL */
+  .detail-panel {
+    display: none;
+    background: var(--bg2);
+    border-top: 0.5px solid var(--border);
+    border-bottom: 0.5px solid var(--border);
+    padding: 3rem;
+    animation: slideDown 0.2s ease;
+  }
+
+  .detail-panel.open { display: block; }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .detail-close {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--text-faint);
+    cursor: pointer;
+    text-transform: uppercase;
+    margin-bottom: 2.5rem;
+    transition: color 0.2s;
+  }
+
+  .detail-close:hover { color: var(--text); }
+
+  .detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    max-width: 800px;
+  }
+
+  .detail-title {
+    font-family: 'EB Garamond', serif;
+    font-size: 32px;
+    font-weight: 400;
+    color: var(--text);
+    line-height: 1.2;
+    margin-bottom: 2rem;
+  }
+
+  .detail-field { margin-bottom: 1.25rem; }
+
+  .detail-label {
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+  }
+
+  .detail-value {
+    font-family: 'EB Garamond', serif;
+    font-size: 15px;
+    color: var(--text-dim);
+    line-height: 1.65;
+    white-space: pre-line;
+  }
+
+  .detail-tag {
+    display: inline-block;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    padding: 3px 8px;
+    border: 0.5px solid rgba(200,184,154,0.3);
+    color: var(--accent);
+    border-radius: 1px;
+    text-transform: uppercase;
+    margin-right: 0.4rem;
+    margin-bottom: 0.4rem;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 3rem;
+    border-top: 0.5px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-contact {
+    font-family: 'EB Garamond', serif;
+    font-size: 16px;
+    color: var(--text-dim);
+  }
+
+  .footer-contact a {
+    color: var(--text);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-contact a:hover { color: var(--accent); }
+
+  .footer-copy {
+    font-size: 10px;
+    color: var(--text-faint);
+    letter-spacing: 0.08em;
+  }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.25rem; }
+    .nav-links { display: none; }
+    .hero { padding: 3rem 1.25rem 3rem; grid-template-columns: 1fr; gap: 2rem; }
+    .hero-image { aspect-ratio: 16/9; order: -1; }
+    .hero-name { font-size: 48px; }
+    .section-header { padding: 1.5rem 1.25rem; }
+    .category-label { padding: 1rem 1.25rem; }
+    .table-header { display: none; }
+    .project-row {
+      grid-template-columns: 60px 1fr;
+      grid-template-rows: auto auto auto;
+      padding: 0 1.25rem;
+      min-height: auto;
+    }
+    .row-artist, .row-label { display: none; }
+    .row-format { font-size: 9px; }
+    .detail-panel { padding: 1.5rem 1.25rem; }
+    .detail-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+    .detail-title { font-size: 24px; }
+    footer { padding: 2rem 1.25rem; flex-direction: column; gap: 1rem; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-name">Hari Yim</div>
+  <div class="nav-right">
+    <div class="nav-links">
+      <a href="#projects" data-i18n="nav_projects">Projects</a>
+      <a href="#contact" data-i18n="nav_contact">Contact</a>
+      <a href="impressum.html" data-i18n="nav_impressum">Impressum</a>
+    </div>
+    <div class="lang-switcher">
+      <button class="lang-btn active" onclick="setLang('en',this)">EN</button>
+      <button class="lang-btn" onclick="setLang('ko',this)">KO</button>
+      <button class="lang-btn" onclick="setLang('de',this)">DE</button>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-text">
+    <h1 class="hero-name">Hari Yim</h1>
+    <p class="hero-role" data-i18n="hero_role">Recording Producer · Balance Engineer</p>
+    <p class="hero-location" data-i18n="hero_location">Berlin · Seoul</p>
+    <p class="hero-tagline">Recording classical music, everywhere</p>
+  </div>
+  <img class="hero-image" src="images/hari.jpg" alt="Hari Yim at work">
+</section>
+
+<div id="projects">
+  <div class="section-header">
+    <span class="section-title" data-i18n="section_projects">Selected Projects</span>
+    <span class="section-meta" id="project-count">38 projects</span>
+  </div>
+
+  <!-- RECORDING PRODUCER / BALANCE ENGINEER -->
+  <div class="category">
+    <div class="category-label" data-i18n="cat_producer" onclick="resetList('producer-list')" style="cursor:pointer;">Recording Producer / Balance Engineer</div>
+    <div class="table-header">
+      <span class="th" data-i18n="th_year" onclick="sortList('producer-list', producerProjects, 'year', this)">Year</span>
+      <span class="th" data-i18n="th_project" onclick="sortList('producer-list', producerProjects, 'title', this)">Project</span>
+      <span class="th" data-i18n="th_artist" onclick="sortList('producer-list', producerProjects, 'artist', this)">Artist</span>
+      <span class="th" data-i18n="th_label" onclick="sortList('producer-list', producerProjects, 'label', this)">Label</span>
+      <span class="th" data-i18n="th_format" onclick="sortList('producer-list', producerProjects, 'format', this)">Format</span>
+    </div>
+    <div id="producer-list"></div>
+  </div>
+
+  <!-- RECORDING ENGINEER -->
+  <div class="category">
+    <div class="category-label" data-i18n="cat_engineer" onclick="resetList('engineer-list')" style="cursor:pointer;">Recording Engineer</div>
+    <div class="table-header">
+      <span class="th" data-i18n="th_year" onclick="sortList('engineer-list', engineerProjects, 'year', this)">Year</span>
+      <span class="th" data-i18n="th_project" onclick="sortList('engineer-list', engineerProjects, 'title', this)">Project</span>
+      <span class="th" data-i18n="th_artist" onclick="sortList('engineer-list', engineerProjects, 'artist', this)">Artist</span>
+      <span class="th" data-i18n="th_label" onclick="sortList('engineer-list', engineerProjects, 'label', this)">Label</span>
+      <span class="th" data-i18n="th_format" onclick="sortList('engineer-list', engineerProjects, 'format', this)">Format</span>
+    </div>
+    <div id="engineer-list"></div>
+  </div>
+
+  <!-- ASSISTANT ENGINEER -->
+  <div class="category">
+    <div class="category-label" data-i18n="cat_assistant" onclick="resetList('assistant-list')" style="cursor:pointer;">Assistant Engineer</div>
+    <div class="table-header">
+      <span class="th" data-i18n="th_year" onclick="sortList('assistant-list', assistantProjects, 'year', this)">Year</span>
+      <span class="th" data-i18n="th_project" onclick="sortList('assistant-list', assistantProjects, 'title', this)">Project</span>
+      <span class="th" data-i18n="th_artist" onclick="sortList('assistant-list', assistantProjects, 'artist', this)">Artist</span>
+      <span class="th" data-i18n="th_label" onclick="sortList('assistant-list', assistantProjects, 'label', this)">Label</span>
+      <span class="th" data-i18n="th_format" onclick="sortList('assistant-list', assistantProjects, 'format', this)">Format</span>
+    </div>
+    <div id="assistant-list"></div>
+  </div>
+</div>
+
+<footer id="contact">
+  <div class="footer-contact">
+    <span data-i18n="footer_contact">Contact — </span><a href="mailto:info@hariyim.com">info@hariyim.com</a>
+  </div>
+  <div class="footer-copy">© Hari Yim</div>
+</footer>
+
+<!-- DETAIL PANEL (shared, injected below active row) -->
+<div class="detail-panel" id="detail-panel">
+  <div class="detail-close" onclick="closeDetail()">← <span data-i18n="back">Back</span></div>
+  <div class="detail-grid">
+    <div>
+      <div class="detail-title" id="d-title"></div>
+      <div class="detail-field">
+        <div class="detail-label" data-i18n="th_artist">Artist</div>
+        <div class="detail-value" id="d-artist"></div>
+      </div>
+      <div class="detail-field">
+        <div class="detail-label" data-i18n="th_label">Label</div>
+        <div class="detail-value" id="d-label"></div>
+      </div>
+      <div class="detail-field">
+        <div class="detail-label" data-i18n="th_format">Format</div>
+        <div class="detail-value" id="d-format"></div>
+      </div>
+      <div class="detail-field">
+        <div class="detail-label" data-i18n="th_year">Year</div>
+        <div class="detail-value" id="d-year"></div>
+      </div>
+      <div class="detail-field">
+        <div class="detail-label" data-i18n="th_role">Role</div>
+        <div id="d-tags"></div>
+      </div>
+    </div>
+    <div id="d-image-col" style="display:flex; align-items:flex-start;">
+      <a id="d-image-link" href="#" target="_blank" rel="noopener" style="display:block; width:100%;">
+        <img id="d-image" src="" alt="" style="width:100%; aspect-ratio:1/1; object-fit:cover; border:0.5px solid rgba(226,221,212,0.08); cursor:pointer; display:none;">
+        <div id="d-image-placeholder" style="width:100%; aspect-ratio:1/1; background:rgba(226,221,212,0.04); border:0.5px solid rgba(226,221,212,0.08); display:flex; align-items:center; justify-content:center;">
+          <span style="font-size:10px; letter-spacing:0.12em; color:rgba(226,221,212,0.18);">NO IMAGE</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+const i18n = {
+  en: {
+    nav_projects: "Projects", nav_contact: "Contact", nav_impressum: "Impressum",
+    hero_role: "Recording Producer · Balance Engineer",
+    hero_location: "Berlin · Seoul",
+    section_projects: "Selected Projects",
+    cat_producer: "Recording Producer / Balance Engineer",
+    cat_engineer: "Recording Engineer",
+    cat_assistant: "Assistant Engineer",
+    th_year: "Year", th_project: "Project", th_artist: "Artist", th_label: "Label", th_format: "Format", th_role: "Role",
+    footer_contact: "Contact — ", back: "Back"
+  },
+  ko: {
+    nav_projects: "프로젝트", nav_contact: "연락처", nav_impressum: "Impressum",
+    hero_role: "레코딩 프로듀서 · 밸런스 엔지니어",
+    hero_location: "베를린 · 서울",
+    section_projects: "프로젝트 목록",
+    cat_producer: "레코딩 프로듀서 / 밸런스 엔지니어",
+    cat_engineer: "레코딩 엔지니어",
+    cat_assistant: "어시스턴트 엔지니어",
+    th_year: "연도", th_project: "프로젝트", th_artist: "아티스트", th_label: "레이블", th_format: "포맷", th_role: "역할",
+    footer_contact: "연락처 — ", back: "돌아가기"
+  },
+  de: {
+    nav_projects: "Projekte", nav_contact: "Kontakt", nav_impressum: "Impressum",
+    hero_role: "Recording Producer · Balance Engineer",
+    hero_location: "Berlin · Seoul",
+    section_projects: "Ausgewählte Projekte",
+    cat_producer: "Recording Producer / Balance Engineer",
+    cat_engineer: "Recording Engineer",
+    cat_assistant: "Assistant Engineer",
+    th_year: "Jahr", th_project: "Projekt", th_artist: "Künstler", th_label: "Label", th_format: "Format", th_role: "Rolle",
+    footer_contact: "Kontakt — ", back: "Zurück"
+  }
+};
+
+const producerProjects = [
+  { year:"2022", title:"Bach: The Six Cello Suites", artist:"Michiaki Ueno, cello", label:"La Dolce Volta", format:"CD Production", role:"Recording Producer / Balance Engineer", image:"https://www.ladolcevolta.com/wp-content/uploads/2022/09/LDV115.6_COVER-300x300-1.webp", link:"https://www.ladolcevolta.com/produit/bach-the-six-cello-suites/?lang=en" },
+  { year:"2026", title:"WDR Sinfonieorchester Köln", artist:"Andris Poga, conductor\nDaniel Müller-Schott, cello\nSarang Seohyun Kim, violin", label:"WDR", format:"TV Production", role:"Recording Producer / Balance Engineer", link:"https://www.youtube.com/watch?v=0xPiaP8m7-U" },
+  { year:"2026", title:"Wings of Renaissance", artist:"Violetta Khachikyan, piano", label:"Oehms Classics", format:"CD Production", role:"Recording Producer / Balance Engineer", image:"https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/4a/db/ad/4adbad8f-ffae-9095-8042-23b191cc7004/4260330917478.png/600x600bb.jpg", link:"https://classical.music.apple.com/kr/album/1874275744" },
+  { year:"2026", title:"Once Heard, Long Forgotten", artist:"Jinwoo Lee, violin\nEunice Kim, piano", label:"Navona Records", format:"CD Production", role:"Recording Producer / Balance Engineer", image:"https://www.navonarecords.com/wp-content/uploads/NV6852.jpg", link:"https://www.navonarecords.com/catalog/nv6852/" },
+  { year:"2026", title:"Beethoven Violin Sonata Complete Series I", artist:"Jehye Lee, violin\nDasol Kim, piano", label:"—", format:"TV Production", role:"Recording Producer / Balance Engineer", image:"images/beethoven_violin_sonata.gif", link:"https://www.youtube.com/watch?v=GttcWcli5fc" },
+  { year:"2025", title:"Michiaki Ueno: Origin", artist:"Michiaki Ueno, cello", label:"La Dolce Volta", format:"CD Production", role:"Recording Producer / Balance Engineer", image:"https://www.ladolcevolta.com/wp-content/uploads/2025/10/LDV140_COVER-ITUNES-scaled.jpg", link:"https://www.ladolcevolta.com/produit/origin/?lang=en" },
+  { year:"2025", title:"My Beloved — Kinoshita Makiko", artist:"Shimon Yoshida, tenor\nDaichi Ikari, piano", label:"Nami Records", format:"CD Production", role:"Recording Producer / Balance Engineer", image:"images/kinoshita.jpg", link:"https://www.nami-records.co.jp/albums/wwcc8040.html" },
+  { year:"2025", title:"Waldensemble: Festive Wald 10th Anniversary", artist:"Waldensemble", label:"—", format:"TV Production", role:"Recording Producer / Balance Engineer", image:"images/festive_wald.jpg" },
+  { year:"2025", title:'Violist Sejune Kim Recital "Hommage"', artist:"Sejune Kim, viola\nJonghai Park, piano", label:"—", format:"TV Production", role:"Recording Producer / Balance Engineer", image:"images/sejune_kim.gif" },
+  { year:"2025", title:"Norwegian Chamber Orchestra String Sextet — 36th Eagonconcert", artist:"Norwegian Chamber Orchestra String Sextet", label:"—", format:"TV Production", role:"Recording Producer / Balance Engineer", image:"images/norwegian_sextet.jpg" },
+  { year:"2024–2025", title:"Spielende Insel — Chambermusic Project Berlin", artist:"Spielende Insel", label:"—", format:"Live Concert Recording", role:"Recording Producer / Balance Engineer" },
+  { year:"2024", title:"Waldensemble: SLAVIC", artist:"Waldensemble", label:"—", format:"TV Production", role:"Recording Producer / Balance Engineer", image:"images/slavic.jpg" },
+  { year:"2024", title:"Beethoven Variations for Violoncello and Piano", artist:"Jungin Huh, cello\nIlya Rashkovskiy, piano", label:"Sony", format:"CD Production", role:"Recording Producer / Balance Engineer", image:"images/beethoven_variations.jpg" },
+  { year:"2024", title:"Respighi: Gli Uccelli — Stolen Childhoods", artist:"Oksana Lyniv\nYouth Symphony Orchestra of Ukraine", label:"—", format:"Live Recording", role:"Recording Producer / Balance Engineer" },
+  { year:"2024", title:'V. Vakulenko / E. Orkin "Daddy\'s Book"', artist:"Oksana Lyniv", label:"—", format:"Video Production", role:"Balance Engineer" },
+  { year:"2024", title:"Tafelmusik x Rachel Podger — 35th Eagonconcert", artist:"Rachel Podger\nTafelmusik", label:"—", format:"TV Production", role:"Recording Producer / Balance Engineer", image:"images/tafelmusik.jpg" },
+  { year:"2024", title:"Goldberg Variationen", artist:"Marcel Mok", label:"ars produktion", format:"CD Production", role:"Recording Producer / Balance Engineer", image:"https://imusic.b-cdn.net/images/item/original/128/4260052385128.jpg", link:"https://www.ars-produktion.de/Marcel_Mok_BachGoldberg_Variationen/topic/Neuheiten/shop_art_id/918/tpl/shop_article_detail" },
+  { year:"2023", title:"Beethoven: Complete Sonatas for Piano and Cello", artist:"Jungin Huh, cello\nIlya Rashkovskiy, piano", label:"Sony", format:"CD Production", role:"Recording Producer / Balance Engineer", image:"images/beethoven_complete_sonatas.jpg", link:"https://open.spotify.com/track/2pvNS5JmEn1PG2jYY13kj8" },
+  { year:"2023", title:"REMINISCENCE: Schubert works for violin and piano", artist:"Jinsu Park, violin\nJeong Heum Yeon, piano", label:"Sony", format:"CD Production", role:"Recording Producer / Balance Engineer", image:"images/reminiscence.jpg", link:"https://open.spotify.com/album/6STIwez4fhKqtBnc2RDj0M" },
+  { year:"2023", title:"Hubarenko: Chamber Symphony No. 1", artist:"Oksana Lyniv\nAndrii Murza\nYouth Orchestra of Ukraine", label:"—", format:"Video Production", role:"Recording Producer / Balance Engineer" },
+  { year:"2023", title:"Verklärte Nacht Op. 4 — Schoenberg", artist:"Waldensemble", label:"—", format:"Video Production", role:"Recording Producer / Balance Engineer" },
+  { year:"2022", title:"Mussorgsky: Pictures at an Exhibition", artist:"Waldensemble", label:"—", format:"Video Production", role:"Recording Producer / Balance Engineer" },
+  { year:"2022", title:"Beethoven: Symphony No. 2", artist:"Jürgen Bruns\nKammersymphonie Berlin", label:"—", format:"Video Production", role:"Recording Producer / Balance Engineer" },
+  { year:"2021", title:"SCHUBERT & BRAHMS", artist:"Jungin Huh, cello\nIlya Rashkovskiy, piano", label:"Sony", format:"CD Production", role:"Recording Producer / Balance Engineer", image:"images/schubert_brahms.jpg" },
+  { year:"2021", title:"Ton für Ton", artist:"Oksana Lyniv\nYouth Symphony Orchestra of Ukraine", label:"Festival Junger Künstler Bayreuth", format:"CD Production", role:"Recording Producer / Balance Engineer", image:"images/ton_fuer_ton.jpg", link:"https://www.kulturbrief.de/youth-symphony-orchestra-of-ukraine-ton-fuer-ton/" },
+  { year:"2021", title:"Tchaikovsky: Souvenir de Florence", artist:"Waldensemble\nHolly Hyun Choe", label:"—", format:"Video Production", role:"Recording Producer / Balance Engineer" },
+  { year:"2020", title:"Hollywood Romance", artist:"Yoonie Han", label:"Universal Music Korea", format:"CD Production", role:"Recording Producer", image:"images/hollywood_romance.jpg" },
+];
+
+const engineerProjects = [
+  { year:"2026", title:"Galakonzert aus Salzburg — Musik der Romantik", artist:"Salzburg Wind Philharmonic", label:"—", format:"CD / Video Production", role:"Recording Engineer" },
+  { year:"2025", title:"Salzburg Wind Philharmonic: Happy Birthday, Johann Strauss!", artist:"Salzburg Wind Philharmonic", label:"—", format:"CD / Video Production", role:"Recording Engineer" },
+];
+
+const assistantProjects = [
+  { year:"2023", title:"Bruckner: Symphony No. 9", artist:"Christian Thielemann, conductor\nWiener Philharmoniker", label:"Sony Classical", format:"CD / Video Production", role:"Assistant Engineer", image:"https://cdn-p.smehost.net/sites/374be6422f2b494ab9128079a4bd7dfd/logos/bruckner09_digital.jpg", link:"https://www.sonyclassical.com/releases/releases-details/bruckner-symphony-no-9-in-d-minor-wab-109-edition-nowak-2" },
+  { year:"2025", title:"Berliner Philharmoniker New Year's Eve Concert 2026", artist:"Kirill Petrenko\nBenjamin Bernheim\nBerliner Philharmoniker", label:"Berliner Philharmoniker", format:"TV Production", role:"Assistant Engineer", link:"https://www.digitalconcerthall.com/en/concert/56381" },
+  { year:"2024", title:"Berliner Philharmoniker New Year's Eve Concert 2025", artist:"Kirill Petrenko, conductor\nBerliner Philharmoniker", label:"Berliner Philharmoniker", format:"TV Production", role:"Assistant Engineer", link:"https://www.digitalconcerthall.com/en/concert/55638" },
+  { year:"2023", title:"Salzburger Festspiele: Christian Thielemann / Wiener Philharmoniker / Wiener Singverein / Elsa Dreisig / Michael Volle", artist:"Christian Thielemann, conductor\nWiener Philharmoniker\nWiener Singverein", label:"Unitel Edition / Mezzo", format:"TV Production", role:"Assistant Engineer", image:"images/brahms_requiem.jpg", link:"https://www.mezzo.tv/fr/Classique/Wiener-Philharmoniker-Christian-Thielemann-Brahms-Ein-Deutsches-Requiem-18426" },
+  { year:"2023", title:"Evgeny Kissin: Bach, Mozart, Chopin, Rachmaninoff", artist:"Evgeny Kissin", label:"—", format:"Video Production", role:"Assistant Engineer" },
+  { year:"2026", title:"Nurejew", artist:"Staatsballett Berlin", label:"Arte", format:"Video Production", role:"Assistant Engineer" },
+  { year:"2025", title:"R. Strauss: Die Schweigsame Frau", artist:"Christian Thielemann, conductor\nStaatskapelle Berlin\nStaatsoper Unter den Linden Berlin", label:"Unitel", format:"Live Video Production", role:"Assistant Engineer" },
+  { year:"2024", title:"Leipziger Ballett: Tchaikovsky", artist:"Oper Leipzig", label:"MEZZO", format:"Video Production", role:"Assistant Engineer" },
+  { year:"2023", title:"Salzburger Festspiele: Daniil Trifonov", artist:"Daniil Trifonov", label:"Stage Plus", format:"Live Recording / Video Production", role:"Assistant Engineer" },
+  { year:"2023", title:"Salzburger Festspiele: Hadelich / Nelsons / Wiener Philharmoniker", artist:"Augustin Hadelich\nAndris Nelsons\nWiener Philharmoniker", label:"Stage Plus / Medici TV", format:"Live Recording / Video Production", role:"Assistant Engineer" },
+  { year:"2022", title:"Salzburger Festspiele: Lang Lang / Barenboim / West-Eastern Divan", artist:"Lang Lang\nDaniel Barenboim\nWest-Eastern Divan Orchestra", label:"—", format:"Live Recording / Video Production", role:"Assistant Engineer" },
+  { year:"2022", title:"Evgeny Kissin in Wuppertal", artist:"Evgeny Kissin", label:"—", format:"Video Production", role:"Assistant Engineer" },
+];
+
+const originalProducer = producerProjects.map(p => Object.assign({}, p));
+const originalEngineer = engineerProjects.map(p => Object.assign({}, p));
+const originalAssistant = assistantProjects.map(p => Object.assign({}, p));
+const sortState = {};
+
+function resetList(containerId) {
+  const origMap = { 'producer-list': originalProducer, 'engineer-list': originalEngineer, 'assistant-list': originalAssistant };
+  const projMap = { 'producer-list': producerProjects, 'engineer-list': engineerProjects, 'assistant-list': assistantProjects };
+  const orig = origMap[containerId];
+  const proj = projMap[containerId];
+  orig.forEach((p, i) => { proj[i] = Object.assign({}, p); });
+  delete sortState[containerId];
+  document.querySelectorAll('.th').forEach(t => t.classList.remove('sort-asc','sort-desc'));
+  closeDetail();
+  renderList(projMap[containerId], containerId);
+}
+
+function sortList(containerId, projects, key, thEl) {
+  const current = sortState[containerId];
+  let asc = (current && current.key === key) ? !current.asc : true;
+  sortState[containerId] = { key, asc };
+
+  thEl.closest('.table-header').querySelectorAll('.th').forEach(t => {
+    t.classList.remove('sort-asc', 'sort-desc');
+  });
+  thEl.classList.add(asc ? 'sort-asc' : 'sort-desc');
+
+  projects.sort((a, b) => {
+    const av = (a[key] || '').toString().toLowerCase();
+    const bv = (b[key] || '').toString().toLowerCase();
+    return asc ? av.localeCompare(bv) : bv.localeCompare(av);
+  });
+
+  closeDetail();
+  renderList(projects, containerId);
+}
+let currentLang = 'en';
+let openRowEl = null;
+
+function renderList(projects, containerId) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  projects.forEach((p, i) => {
+    const row = document.createElement('div');
+    row.className = 'project-row';
+    row.dataset.index = i;
+    row.dataset.list = containerId;
+    row.innerHTML = `
+      <div class="row-year">${p.year}</div>
+      <div class="row-title">${p.title}</div>
+      <div class="row-artist">${p.artist.split('\n').slice(0,2).join('<br>')}</div>
+      <div class="row-label">${p.label === '—' ? '' : p.label}</div>
+      <div class="row-format">${p.format} <span class="row-arrow">↗</span></div>
+    `;
+    row.addEventListener('click', () => toggleDetail(row, p));
+    container.appendChild(row);
+  });
+}
+
+function toggleDetail(rowEl, project) {
+  const panel = document.getElementById('detail-panel');
+
+  if (openRowEl === rowEl) {
+    closeDetail();
+    return;
+  }
+
+  if (openRowEl) {
+    openRowEl.classList.remove('active');
+    panel.classList.remove('open');
+  }
+
+  document.getElementById('d-title').textContent = project.title;
+  document.getElementById('d-artist').textContent = project.artist;
+  document.getElementById('d-label').textContent = project.label;
+  document.getElementById('d-format').textContent = project.format;
+  document.getElementById('d-year').textContent = project.year;
+  document.getElementById('d-tags').innerHTML = `<span class="detail-tag">${project.role}</span>`;
+
+  const img = document.getElementById('d-image');
+  const placeholder = document.getElementById('d-image-placeholder');
+  const imgLink = document.getElementById('d-image-link');
+
+  if (project.image) {
+    img.src = project.image;
+    img.alt = project.title;
+    img.style.display = 'block';
+    placeholder.style.display = 'none';
+  } else {
+    img.src = '';
+    img.alt = '';
+    img.style.display = 'none';
+    placeholder.style.display = 'flex';
+  }
+
+  if (project.link) {
+    imgLink.href = project.link;
+    imgLink.style.cursor = 'pointer';
+  } else {
+    imgLink.href = '#';
+    imgLink.style.cursor = 'default';
+    imgLink.onclick = (e) => e.preventDefault();
+  }
+
+  rowEl.after(panel);
+  panel.classList.add('open');
+  openRowEl = rowEl;
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function closeDetail() {
+  const panel = document.getElementById('detail-panel');
+  panel.classList.remove('open');
+  if (openRowEl) openRowEl.classList.remove('active');
+  openRowEl = null;
+}
+
+function setLang(lang, btn) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const t = i18n[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (t[key] !== undefined) el.textContent = t[key];
+  });
+}
+
+function countAll() {
+  return producerProjects.length + engineerProjects.length + assistantProjects.length;
+}
+
+renderList(producerProjects, 'producer-list');
+renderList(engineerProjects, 'engineer-list');
+renderList(assistantProjects, 'assistant-list');
+document.getElementById('project-count').textContent = countAll() + ' projects';
+</script>
+</body>
+</html>
