@@ -716,6 +716,8 @@ function toggleDetail(rowEl, project) {
     img.style.display = 'block';
     placeholder.style.display = 'none';
   } else {
+    img.src = '';
+    img.alt = '';
     img.style.display = 'none';
     placeholder.style.display = 'flex';
   }
