@@ -706,34 +706,14 @@ function toggleDetail(rowEl, project) {
   document.getElementById('d-year').textContent = project.year;
   document.getElementById('d-tags').innerHTML = `<span class="detail-tag">${project.role}</span>`;
 
-  const img = document.getElementById('d-image');
-  const placeholder = document.getElementById('d-image-placeholder');
-  const imgLink = document.getElementById('d-image-link');
-
-  if (project.image) {
-    img.src = project.image;
-    img.alt = project.title;
-    img.style.display = 'block';
-    placeholder.style.display = 'none';
+  const imageCol = document.getElementById('d-image-col');
+  
+  if (project.image && project.link) {
+    imageCol.innerHTML = '<a href="' + project.link + '" target="_blank" rel="noopener" style="display:block; width:100%;"><img src="' + project.image + '" alt="' + project.title.replace(/"/g, "'") + '" style="width:100%; aspect-ratio:1/1; object-fit:contain; background:#0f0f0d; cursor:pointer;"></a>';
+  } else if (project.image) {
+    imageCol.innerHTML = '<div style="width:100%;"><img src="' + project.image + '" alt="' + project.title.replace(/"/g, "'") + '" style="width:100%; aspect-ratio:1/1; object-fit:contain; background:#0f0f0d;"></div>';
   } else {
-    img.src = '';
-    img.alt = '';
-    img.style.display = 'none';
-    placeholder.style.display = 'flex';
-  }
-
-  imgLink.replaceWith(imgLink.cloneNode(true));
-  const newLink = document.getElementById('d-image-link');
-  if (project.link) {
-    newLink.href = project.link;
-    newLink.target = '_blank';
-    newLink.rel = 'noopener';
-    newLink.style.cursor = 'pointer';
-  } else {
-    newLink.href = '';
-    newLink.target = '';
-    newLink.style.cursor = 'default';
-    newLink.addEventListener('click', (e) => e.preventDefault());
+    imageCol.innerHTML = "<div style='width:100%; aspect-ratio:1/1; background:rgba(226,221,212,0.04); border:0.5px solid rgba(226,221,212,0.08); display:flex; align-items:center; justify-content:center;'><span style='font-size:10px; letter-spacing:0.12em; color:rgba(226,221,212,0.18);'>NO IMAGE</span></div>";
   }
 
   rowEl.after(panel);
