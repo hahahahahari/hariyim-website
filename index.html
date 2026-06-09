@@ -529,13 +529,8 @@
         <div id="d-tags"></div>
       </div>
     </div>
-    <div id="d-image-col" style="display:flex; align-items:flex-start;">
-      <a id="d-image-link" href="#" target="_blank" rel="noopener" style="display:block; width:100%;">
-        <img id="d-image" src="" alt="" style="width:100%; aspect-ratio:1/1; object-fit:contain; background:#0f0f0d; cursor:pointer; display:none;">
-        <div id="d-image-placeholder" style="width:100%; aspect-ratio:1/1; background:rgba(226,221,212,0.04); border:0.5px solid rgba(226,221,212,0.08); display:flex; align-items:center; justify-content:center;">
-          <span style="font-size:10px; letter-spacing:0.12em; color:rgba(226,221,212,0.18);">NO IMAGE</span>
-        </div>
-      </a>
+    <div id="d-image-col" style="display:flex; flex-direction:column; align-items:flex-start; gap:0.75rem;">
+      <div id="d-image-wrap" style="width:100%;"></div>
     </div>
   </div>
 </div>
@@ -706,15 +701,17 @@ function toggleDetail(rowEl, project) {
   document.getElementById('d-year').textContent = project.year;
   document.getElementById('d-tags').innerHTML = `<span class="detail-tag">${project.role}</span>`;
 
-  const imageCol = document.getElementById('d-image-col');
-  
-  if (project.image && project.link) {
-    imageCol.innerHTML = '<a href="' + project.link + '" target="_blank" rel="noopener" style="display:block; width:100%;"><img src="' + project.image + '" alt="' + project.title.replace(/"/g, "'") + '" style="width:100%; aspect-ratio:1/1; object-fit:contain; background:#0f0f0d; cursor:pointer;"></a>';
-  } else if (project.image) {
-    imageCol.innerHTML = '<div style="width:100%;"><img src="' + project.image + '" alt="' + project.title.replace(/"/g, "'") + '" style="width:100%; aspect-ratio:1/1; object-fit:contain; background:#0f0f0d;"></div>';
+  const imageWrap = document.getElementById('d-image-wrap');
+  let html = '';
+  if (project.image) {
+    html += '<img src="' + project.image + '" alt="" style="width:100%; aspect-ratio:1/1; object-fit:contain; background:#0f0f0d;">';
   } else {
-    imageCol.innerHTML = "<div style='width:100%; aspect-ratio:1/1; background:rgba(226,221,212,0.04); border:0.5px solid rgba(226,221,212,0.08); display:flex; align-items:center; justify-content:center;'><span style='font-size:10px; letter-spacing:0.12em; color:rgba(226,221,212,0.18);'>NO IMAGE</span></div>";
+    html += '<div style="width:100%; aspect-ratio:1/1; background:rgba(226,221,212,0.04); border:0.5px solid rgba(226,221,212,0.08); display:flex; align-items:center; justify-content:center;"><span style=\'font-size:10px;letter-spacing:0.12em;color:rgba(226,221,212,0.18);\'>NO IMAGE</span></div>';
   }
+  if (project.link) {
+    html += '<div style="margin-top:0.6rem;text-align:right;"><a href="' + project.link + '" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:0.4rem;font-size:10px;letter-spacing:0.12em;color:rgba(226,221,212,0.45);text-decoration:none;border:0.5px solid rgba(226,221,212,0.18);padding:5px 14px;text-transform:uppercase;" onmouseover="this.style.color=\'#e2ddd4\';this.style.borderColor=\'rgba(226,221,212,0.5)\';" onmouseout="this.style.color=\'rgba(226,221,212,0.45)\';this.style.borderColor=\'rgba(226,221,212,0.18)\';">↗ &nbsp;Link</a></div>';
+  }
+  imageWrap.innerHTML = html;
 
   rowEl.after(panel);
   panel.classList.add('open');
