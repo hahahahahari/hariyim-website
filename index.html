@@ -529,8 +529,13 @@
         <div id="d-tags"></div>
       </div>
     </div>
-    <div id="d-image-col" style="display:flex; flex-direction:column; align-items:flex-start; gap:0.75rem;">
-      <div id="d-image-wrap" style="width:100%;"></div>
+    <div id="d-image-col" style="display:flex; align-items:flex-start;">
+      <a id="d-image-link" href="#" target="_blank" rel="noopener" style="display:block; width:100%;">
+        <img id="d-image" src="" alt="" style="width:100%; aspect-ratio:1/1; object-fit:contain; background:#0f0f0d; cursor:pointer; display:none;">
+        <div id="d-image-placeholder" style="width:100%; aspect-ratio:1/1; background:rgba(226,221,212,0.04); border:0.5px solid rgba(226,221,212,0.08); display:flex; align-items:center; justify-content:center;">
+          <span style="font-size:10px; letter-spacing:0.12em; color:rgba(226,221,212,0.18);">NO IMAGE</span>
+        </div>
+      </a>
     </div>
   </div>
 </div>
@@ -612,7 +617,7 @@ const assistantProjects = [
   { year:"2025", title:"Berliner Philharmoniker New Year's Eve Concert 2025", artist:"Kirill Petrenko\nBenjamin Bernheim\nBerliner Philharmoniker", label:"Berliner Philharmoniker", format:"TV Production", role:"Assistant Engineer", image:"images/berliner_nye_2025.jpg", link:"https://www.mezzo.tv/en/Classical/Benjamin-Bernheim-Berliner-Philharmoniker-Kirill-Petrenko-New-Year's-Eve-Concert-2025-18123" },
   { year:"2024", title:"Berliner Philharmoniker New Year's Eve Concert 2024", artist:"Kirill Petrenko, conductor\nBerliner Philharmoniker", label:"Berliner Philharmoniker", format:"TV Production", role:"Assistant Engineer", image:"images/berliner_nye_2024.jpg", link:"https://www.digitalconcerthall.com/en/concert/55638" },
   { year:"2023", title:"Salzburger Festspiele: Christian Thielemann / Wiener Philharmoniker / Wiener Singverein / Elsa Dreisig / Michael Volle", artist:"Christian Thielemann, conductor\nWiener Philharmoniker\nWiener Singverein", label:"Unitel Edition / Mezzo", format:"TV Production", role:"Assistant Engineer", image:"images/brahms_requiem.jpg", link:"https://www.mezzo.tv/fr/Classique/Wiener-Philharmoniker-Christian-Thielemann-Brahms-Ein-Deutsches-Requiem-18426" },
-  { year:"2023", title:"Evgeny Kissin: Bach, Mozart, Chopin, Rachmaninoff", artist:"Evgeny Kissin", label:"—", format:"Video Production", role:"Assistant Engineer", image:"images/kissin_bach.png", link:"https://www.youtube.com/watch?v=xUb3D2do5bY" },
+  { year:"2023", title:"Evgeny Kissin: Bach, Mozart, Chopin, Rachmaninoff", artist:"Evgeny Kissin", label:"—", format:"Video Production", role:"Assistant Engineer / Editor", image:"images/kissin_bach.png", link:"https://www.youtube.com/watch?v=xUb3D2do5bY" },
   { year:"2026", title:"Nurejew", artist:"Staatsballett Berlin", label:"Arte", format:"Video Production", role:"Assistant Engineer", image:"images/nurejew.webp", link:"https://www.arte.tv/de/videos/131544-000-A/nurejew/" },
   { year:"2025", title:"R. Strauss: Die Schweigsame Frau", artist:"Christian Thielemann, conductor\nStaatskapelle Berlin\nStaatsoper Unter den Linden Berlin", label:"Unitel", format:"Live Video Production", role:"Assistant Engineer", image:"images/schweigsame_frau.jpg" },
   { year:"2024", title:"Leipziger Ballett: Tchaikovsky", artist:"Oper Leipzig", label:"MEZZO", format:"Video Production", role:"Assistant Engineer", image:"images/leipziger_ballett.jpg" },
@@ -701,17 +706,35 @@ function toggleDetail(rowEl, project) {
   document.getElementById('d-year').textContent = project.year;
   document.getElementById('d-tags').innerHTML = `<span class="detail-tag">${project.role}</span>`;
 
-  const imageWrap = document.getElementById('d-image-wrap');
-  let html = '';
+  const img = document.getElementById('d-image');
+  const placeholder = document.getElementById('d-image-placeholder');
+  const imgLink = document.getElementById('d-image-link');
+
   if (project.image) {
-    html += '<img src="' + project.image + '" alt="" style="width:100%; aspect-ratio:1/1; object-fit:contain; background:#0f0f0d;">';
+    img.src = project.image;
+    img.alt = project.title;
+    img.style.display = 'block';
+    placeholder.style.display = 'none';
   } else {
-    html += '<div style="width:100%; aspect-ratio:1/1; background:rgba(226,221,212,0.04); border:0.5px solid rgba(226,221,212,0.08); display:flex; align-items:center; justify-content:center;"><span style=\'font-size:10px;letter-spacing:0.12em;color:rgba(226,221,212,0.18);\'>NO IMAGE</span></div>';
+    img.src = '';
+    img.alt = '';
+    img.style.display = 'none';
+    placeholder.style.display = 'flex';
   }
+
+  imgLink.replaceWith(imgLink.cloneNode(true));
+  const newLink = document.getElementById('d-image-link');
   if (project.link) {
-    html += '<div style="margin-top:0.6rem;text-align:right;"><a href="' + project.link + '" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:0.4rem;font-size:10px;letter-spacing:0.12em;color:rgba(226,221,212,0.45);text-decoration:none;border:0.5px solid rgba(226,221,212,0.18);padding:5px 14px;text-transform:uppercase;" onmouseover="this.style.color=\'#e2ddd4\';this.style.borderColor=\'rgba(226,221,212,0.5)\';" onmouseout="this.style.color=\'rgba(226,221,212,0.45)\';this.style.borderColor=\'rgba(226,221,212,0.18)\';">↗ &nbsp;Link</a></div>';
+    newLink.href = project.link;
+    newLink.target = '_blank';
+    newLink.rel = 'noopener';
+    newLink.style.cursor = 'pointer';
+  } else {
+    newLink.href = '';
+    newLink.target = '';
+    newLink.style.cursor = 'default';
+    newLink.addEventListener('click', (e) => e.preventDefault());
   }
-  imageWrap.innerHTML = html;
 
   rowEl.after(panel);
   panel.classList.add('open');
