@@ -586,7 +586,7 @@ const producerProjects = [
   { year:"2025", title:"Michiaki Ueno: Origin", artist:"Michiaki Ueno, cello", label:"La Dolce Volta", format:"CD Production", role:"Recording Producer / Balance Engineer", image:"https://www.ladolcevolta.com/wp-content/uploads/2025/10/LDV140_COVER-ITUNES-scaled.jpg", link:"https://www.ladolcevolta.com/produit/origin/?lang=en" },
   { year:"2025", title:"My Beloved — Kinoshita Makiko", artist:"Shimon Yoshida, tenor\nDaichi Ikari, piano", label:"Nami Records", format:"CD Production", role:"Recording Producer / Balance Engineer", image:"images/kinoshita.jpg", link:"https://www.nami-records.co.jp/albums/wwcc8040.html" },
   { year:"2025", title:"Waldensemble: Festive Wald 10th Anniversary", artist:"Waldensemble", label:"—", format:"TV Production", role:"Recording Producer / Balance Engineer", image:"images/festive_wald.jpg" },
-  { year:"2025", title:'Violist Sejune Kim Recital "Hommage"', artist:"Sejune Kim, viola\nJonghai Park, piano", label:"—", format:"TV Production", role:"Recording Producer / Balance Engineer", image:"images/sejune_kim.gif" },
+  { year:"2025", title:'Violist Sejune Kim Recital "Hommage"', artist:"Sejune Kim, viola\nJonghai Park, piano", label:"—", format:"TV Production", role:"Recording Producer / Balance Engineer", image:"images/sejune_kim.gif", link:"https://www.youtube.com/watch?v=TceHCPCW7F0" },
   { year:"2025", title:"Norwegian Chamber Orchestra String Sextet — 36th Eagonconcert", artist:"Norwegian Chamber Orchestra String Sextet", label:"—", format:"TV Production", role:"Recording Producer / Balance Engineer", image:"images/norwegian_sextet.jpg", link:"https://www.youtube.com/watch?v=YHx7n19hAtk" },
   { year:"2024–2025", title:"Spielende Insel — Chambermusic Project Berlin", artist:"Catalin Serban, piano\nAndrei Ioniță, cello\nVeriko Tchumburidze, violin\nTobias Feldmann, violin\nNoa Wildschut, violin\nSeiji Okamoto, violin\nPablo Barragán, clarinet\nNilay Özdemir, viola\nSindy Mohamed, viola\netc.", label:"—", format:"Live Concert Recording", role:"Recording Producer / Balance Engineer", image:"images/spielende_insel.png", link:"https://www.youtube.com/watch?v=5LT3xSALdzM" },
   { year:"2024", title:"Waldensemble: SLAVIC", artist:"Waldensemble", label:"—", format:"TV Production", role:"Recording Producer / Balance Engineer", image:"images/slavic.jpg" },
@@ -725,6 +725,7 @@ function toggleDetail(rowEl, project) {
   if (project.link) {
     imgLink.href = project.link;
     imgLink.style.cursor = 'pointer';
+    imgLink.onclick = null;
   } else {
     imgLink.href = '#';
     imgLink.style.cursor = 'default';
