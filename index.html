@@ -593,7 +593,7 @@ const producerProjects = [
   { year:"2024", title:"Beethoven Variations for Violoncello and Piano", artist:"Jungin Huh, cello\nIlya Rashkovskiy, piano", label:"Sony", format:"CD Production", role:"Recording Producer / Balance Engineer", image:"images/beethoven_variations.jpg", link:"https://open.spotify.com/album/6Z2ijTdLp8dwoTV7JSRR77" },
   { year:"2024", title:"Respighi: Gli Uccelli — Stolen Childhoods", artist:"Oksana Lyniv\nYouth Symphony Orchestra of Ukraine", label:"—", format:"Live Recording", role:"Recording Producer / Balance Engineer", image:"images/respighi.png", link:"https://www.youtube.com/watch?v=IdDQEQwfD84" },
   { year:"2024", title:'V. Vakulenko / E. Orkin "Daddy\'s Book"', artist:"Oksana Lyniv", label:"—", format:"Video Production", role:"Balance Engineer", image:"images/daddys_book.png", link:"https://www.youtube.com/watch?v=txO4_DrWMYM" },
-  { year:"2024", title:"Tafelmusik x Rachel Podger — 35th Eagonconcert", artist:"Rachel Podger\nTafelmusik", label:"—", format:"TV Production", role:"Recording Producer / Balance Engineer", image:"images/tafelmusik.jpg" },
+  { year:"2024", title:"Tafelmusik x Rachel Podger — 35th Eagonconcert", artist:"Rachel Podger\nTafelmusik", label:"—", format:"TV Production", role:"Recording Producer / Balance Engineer", image:"images/tafelmusik.jpg", link:"https://www.youtube.com/watch?v=OmzppEvDeiw" },
   { year:"2024", title:"Goldberg Variationen", artist:"Marcel Mok", label:"ars produktion", format:"CD Production", role:"Recording Producer / Balance Engineer", image:"https://imusic.b-cdn.net/images/item/original/128/4260052385128.jpg", link:"https://classical.music.apple.com/de/album/1817114970?l=de-DE" },
   { year:"2023", title:"Beethoven: Complete Sonatas for Piano and Cello", artist:"Jungin Huh, cello\nIlya Rashkovskiy, piano", label:"Sony", format:"CD Production", role:"Recording Producer / Balance Engineer", image:"images/beethoven_complete_sonatas.jpg", link:"https://open.spotify.com/track/2pvNS5JmEn1PG2jYY13kj8" },
   { year:"2023", title:"REMINISCENCE: Schubert works for violin and piano", artist:"Jinsu Park, violin\nJeong Heum Yeon, piano", label:"Sony", format:"CD Production", role:"Recording Producer / Balance Engineer", image:"images/reminiscence.jpg", link:"https://open.spotify.com/album/6STIwez4fhKqtBnc2RDj0M" },
@@ -722,17 +722,18 @@ function toggleDetail(rowEl, project) {
     placeholder.style.display = 'flex';
   }
 
+  imgLink.replaceWith(imgLink.cloneNode(true));
+  const newLink = document.getElementById('d-image-link');
   if (project.link) {
-    imgLink.href = project.link;
-    imgLink.target = '_blank';
-    imgLink.rel = 'noopener';
-    imgLink.style.cursor = 'pointer';
-    imgLink.onclick = null;
+    newLink.href = project.link;
+    newLink.target = '_blank';
+    newLink.rel = 'noopener';
+    newLink.style.cursor = 'pointer';
   } else {
-    imgLink.href = '';
-    imgLink.target = '';
-    imgLink.style.cursor = 'default';
-    imgLink.onclick = (e) => { e.preventDefault(); return false; };
+    newLink.href = '';
+    newLink.target = '';
+    newLink.style.cursor = 'default';
+    newLink.addEventListener('click', (e) => e.preventDefault());
   }
 
   rowEl.after(panel);
