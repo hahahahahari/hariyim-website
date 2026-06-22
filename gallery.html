@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery — Hari Yim</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4/dist/maplibre-gl.css">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:      #0c0c0c;
+      --surface: #141412;
+      --border:  #222018;
+      --text:    #e2ddd5;
+      --muted:   #6a6460;
+      --accent:  #c8a97a;
+      --font-s:  'EB Garamond', Georgia, serif;
+      --font-m:  'DM Mono', 'Courier New', monospace;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font-s); font-size: 17px; line-height: 1.6; }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(12,12,12,0.94); backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2.5rem; height: 52px;
+    }
+    .nav-logo { font-family: var(--font-s); font-size: 0.95rem; letter-spacing: 0.04em; color: var(--text); text-decoration: none; }
+    .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+    .nav-links a { font-family: var(--font-m); font-size: 0.68rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); }
+    .lang-wrap { display: flex; gap: 0.45rem; align-items: center; }
+    .lang-btn { font-family: var(--font-m); font-size: 0.65rem; color: var(--muted); background: none; border: none; cursor: pointer; transition: color 0.2s; }
+    .lang-btn.active { color: var(--text); border-bottom: 1px solid var(--accent); }
+    .nav-sep { color: var(--border); }
+    .nav-toggle { display: none; background: none; border: none; cursor: pointer; flex-direction: column; gap: 5px; padding: 4px; }
+    .nav-toggle span { display: block; width: 20px; height: 1px; background: var(--text); }
+
+    /* ── PAGE HEADER ── */
+    .page-header { padding: 3.5rem 2.5rem 2rem; border-bottom: 1px solid var(--border); }
+    .page-header h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 400; font-style: italic; letter-spacing: -0.01em; line-height: 1.1; }
+    .page-header p { margin-top: 0.5rem; font-family: var(--font-m); font-size: 0.7rem; color: var(--muted); letter-spacing: 0.06em; }
+
+    /* ── FILTER BAR ── */
+    .filter-bar { padding: 1.3rem 2.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .filter-btn {
+      font-family: var(--font-m); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); background: none; border: 1px solid var(--border);
+      padding: 6px 14px; cursor: pointer; transition: color 0.2s, border-color 0.2s, background 0.2s;
+    }
+    .filter-btn:hover { color: var(--text); border-color: var(--muted); }
+    .filter-btn.active { color: var(--bg); background: var(--text); border-color: var(--text); }
+
+    /* ── MASONRY GRID ── */
+    .gallery-grid { column-count: 3; column-gap: 10px; padding: 1rem 2.5rem 3.5rem; }
+    .gallery-item { break-inside: avoid; margin-bottom: 10px; cursor: pointer; overflow: hidden; }
+    .gallery-item img { display: block; width: 100%; height: auto; transition: opacity 0.25s; filter: grayscale(6%); }
+    .gallery-item:hover img { opacity: 0.84; }
+    .gallery-item.hidden { display: none; }
+
+    /* ── MAP SECTION ── */
+    .map-section {
+      border-top: 1px solid var(--border);
+      padding: 3rem 2.5rem 0;
+    }
+    .map-section-header { margin-bottom: 1.2rem; }
+    .map-section-header h2 { font-size: 1.6rem; font-style: italic; font-weight: 400; }
+    .map-section-header p { margin-top: 0.3rem; font-family: var(--font-m); font-size: 0.68rem; color: var(--muted); letter-spacing: 0.06em; }
+
+    #loc-map {
+      width: 100%; height: 420px;
+      border: 1px solid var(--border);
+    }
+
+    .map-footer {
+      padding: 1rem 0 3rem;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;
+    }
+    .map-stat { font-family: var(--font-m); font-size: 0.62rem; color: var(--muted); letter-spacing: 0.06em; }
+    .map-stat strong { color: var(--accent); }
+
+    /* ── LIGHTBOX ── */
+    #lb {
+      position: fixed; inset: 0; z-index: 900;
+      background: rgba(6,6,6,0.97);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.22s;
+    }
+    #lb.open { opacity: 1; pointer-events: all; }
+    #lb-img { max-width: min(90vw, 1100px); max-height: 90vh; object-fit: contain; display: block; }
+    .lb-x {
+      position: fixed; top: 1.2rem; right: 1.6rem; z-index: 901;
+      background: none; border: none; cursor: pointer;
+      font-family: var(--font-m); font-size: 1.3rem; color: var(--muted); transition: color 0.2s;
+    }
+    .lb-x:hover { color: var(--text); }
+    .lb-arr {
+      position: fixed; top: 50%; transform: translateY(-50%); z-index: 901;
+      background: none; border: none; cursor: pointer;
+      font-family: var(--font-m); font-size: 1.2rem; color: var(--muted);
+      padding: 1.2rem; transition: color 0.2s;
+    }
+    .lb-arr:hover { color: var(--text); }
+    #lb-prev { left: 0.5rem; }
+    #lb-next { right: 0.5rem; }
+    #lb-cap {
+      position: fixed; bottom: 1.2rem; left: 50%; transform: translateX(-50%); z-index: 901;
+      font-family: var(--font-m); font-size: 0.6rem; letter-spacing: 0.07em; color: var(--muted); white-space: nowrap;
+    }
+
+    /* responsive */
+    @media (max-width: 900px) {
+      .gallery-grid { column-count: 2; padding: 1rem 1.5rem 2.5rem; }
+      .page-header, .filter-bar, .map-section { padding-left: 1.5rem; padding-right: 1.5rem; }
+      nav { padding: 0 1.5rem; }
+      #loc-map { height: 340px; }
+    }
+    @media (max-width: 600px) {
+      .gallery-grid { column-count: 1; padding: 0.75rem 1rem 2rem; }
+      .page-header { padding: 2rem 1rem 1.5rem; }
+      .filter-bar, .map-section { padding-left: 1rem; padding-right: 1rem; }
+      nav { padding: 0 1rem; }
+      .nav-links { display: none; position: absolute; top: 52px; left: 0; right: 0; background: var(--bg); border-bottom: 1px solid var(--border); flex-direction: column; gap: 1.2rem; padding: 1.2rem 1rem; z-index: 99; }
+      .nav-links.open { display: flex; }
+      .nav-toggle { display: flex; }
+      #loc-map { height: 280px; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; } }
+
+    /* maplibre popup override */
+    .maplibregl-popup-content {
+      background: rgba(12,12,12,0.93) !important;
+      border: 1px solid #2a2620 !important;
+      border-radius: 0 !important;
+      box-shadow: 0 4px 18px rgba(0,0,0,.55) !important;
+      backdrop-filter: blur(8px);
+      padding: 7px 12px !important;
+    }
+    .maplibregl-popup-tip { display: none !important; }
+    .pp-n { display: block; font-family: 'EB Garamond', serif; font-style: italic; font-size: 0.95rem; color: #e2ddd5; }
+    .pp-m { display: block; font-family: 'DM Mono', monospace; font-size: 0.56rem; letter-spacing: .06em; color: #6a6460; margin-top: 2px; }
+    .maplibregl-ctrl-bottom-right { display: none; }
+    .maplibregl-ctrl-bottom-left .maplibregl-ctrl { background: rgba(12,12,12,0.7) !important; border: 1px solid #222 !important; }
+    .maplibregl-ctrl button span { filter: invert(0.65) !important; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Hari Yim</a>
+  <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')"><span></span><span></span><span></span></button>
+  <ul class="nav-links">
+    <li><a href="index.html"   data-i18n="nav_work">Work</a></li>
+    <li><a href="about.html"   data-i18n="nav_about">About</a></li>
+    <li><a href="gallery.html" data-i18n="nav_gallery" class="active">Gallery</a></li>
+    <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
+    <li class="lang-wrap">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <span class="nav-sep">/</span>
+      <button class="lang-btn" onclick="setLang('ko')">KO</button>
+      <span class="nav-sep">/</span>
+      <button class="lang-btn" onclick="setLang('de')">DE</button>
+    </li>
+  </ul>
+</nav>
+
+<header class="page-header">
+  <h1 data-i18n="page_title">Gallery</h1>
+  <p data-i18n="page_sub">Recording sessions, concert halls &amp; studio work</p>
+</header>
+
+<div class="filter-bar">
+  <button class="filter-btn active" data-filter="all"          data-i18n="f_all">All</button>
+  <button class="filter-btn"        data-filter="hari-at-work" data-i18n="f_work">Hari at Work</button>
+  <button class="filter-btn"        data-filter="halls-setup"  data-i18n="f_halls">Halls &amp; Setup</button>
+</div>
+
+<main class="gallery-grid" id="gallery">
+
+  <!-- HARI AT WORK -->
+  <div class="gallery-item" data-cat="hari-at-work"><img src="gallery/2013-deutsche-oper-am-rhein.jpg"      alt="Deutsche Oper am Rhein 2013" loading="lazy" data-cap="2013 · Deutsche Oper am Rhein"></div>
+  <div class="gallery-item" data-cat="hari-at-work"><img src="gallery/2016-philharmonie-essen.jpg"           alt="Philharmonie Essen 2016"      loading="lazy" data-cap="2016 · Philharmonie Essen"></div>
+  <div class="gallery-item" data-cat="hari-at-work"><img src="gallery/2018-duisburger-philharmoniker.jpg"    alt="Duisburger Philharmoniker"    loading="lazy" data-cap="2018 · Duisburger Philharmoniker"></div>
+  <div class="gallery-item" data-cat="hari-at-work"><img src="gallery/2018-duisburger-philharmoniker-3.jpg"  alt="Duisburger Philharmoniker"    loading="lazy" data-cap="2018 · Duisburger Philharmoniker"></div>
+  <div class="gallery-item" data-cat="hari-at-work"><img src="gallery/2018-duisburger-philharmoniker-9.jpg"  alt="Duisburger Philharmoniker"    loading="lazy" data-cap="2018 · Duisburger Philharmoniker"></div>
+  <div class="gallery-item" data-cat="hari-at-work"><img src="gallery/2018-wuppertaler-sinfonie-orchestra.jpg" alt="Wuppertaler Sinfonieorchester" loading="lazy" data-cap="2018 · Wuppertaler Sinfonieorchester"></div>
+  <div class="gallery-item" data-cat="hari-at-work"><img src="gallery/2019-69-festival-junger-kuenstler-bayreuth.jpg"   alt="Festival junger Künstler" loading="lazy" data-cap="2019 · Festival junger Künstler, Bayreuth"></div>
+  <div class="gallery-item" data-cat="hari-at-work"><img src="gallery/2019-69-festival-junger-kuenstler-bayreuth-2.jpg" alt="Festival junger Künstler" loading="lazy" data-cap="2019 · Festival junger Künstler, Bayreuth"></div>
+  <div class="gallery-item" data-cat="hari-at-work"><img src="gallery/2019-remscheid.jpg"           alt="Remscheid 2019"      loading="lazy" data-cap="2019 · Remscheid"></div>
+  <div class="gallery-item" data-cat="hari-at-work"><img src="gallery/2019-remscheid-2.jpg"         alt="Remscheid 2019"      loading="lazy" data-cap="2019 · Remscheid"></div>
+  <div class="gallery-item" data-cat="hari-at-work"><img src="gallery/2019-younghi-pagh-paan.jpg"   alt="Younghi Pagh-Paan"  loading="lazy" data-cap="2019 · Für Younghi Pagh-Paan, Cologne"></div>
+  <div class="gallery-item" data-cat="hari-at-work"><img src="gallery/2020-mpyc.jpg"                alt="MPYC 2020"           loading="lazy" data-cap="2020 · MPYC, Korea"></div>
+  <div class="gallery-item" data-cat="hari-at-work"><img src="gallery/2020-mpyc-2.jpg"              alt="MPYC 2020"           loading="lazy" data-cap="2020 · MPYC, Korea"></div>
+  <div class="gallery-item" data-cat="hari-at-work"><img src="gallery/2020-2021-fraunhofer-iis-erlangen.jpg" alt="Fraunhofer IIS" loading="lazy" data-cap="2020–2021 · Fraunhofer IIS, Erlangen"></div>
+  <div class="gallery-item" data-cat="hari-at-work"><img src="gallery/2023-gimpo3.jpg"              alt="Gimpo 2023"          loading="lazy" data-cap="2023 · Gimpo Recording"></div>
+  <div class="gallery-item" data-cat="hari-at-work"><img src="gallery/2023-gimpo4.jpg"              alt="Gimpo 2023"          loading="lazy" data-cap="2023 · Gimpo Recording"></div>
+  <div class="gallery-item" data-cat="hari-at-work"><img src="gallery/2023-musikverein.jpg"         alt="Musikverein Wien"    loading="lazy" data-cap="2023 · Musikverein Wien"></div>
+  <div class="gallery-item" data-cat="hari-at-work"><img src="gallery/2023-musikverein2.jpg"        alt="Musikverein Wien"    loading="lazy" data-cap="2023 · Musikverein Wien"></div>
+  <div class="gallery-item" data-cat="hari-at-work"><img src="gallery/2023-palais-lichtenau.jpg"    alt="Palais Lichtenau"    loading="lazy" data-cap="2023 · Palais Lichtenau, Potsdam"></div>
+  <div class="gallery-item" data-cat="hari-at-work"><img src="gallery/2023-salzburger-festspiele.jpg" alt="Salzburger Festspiele" loading="lazy" data-cap="2023 · Salzburger Festspiele"></div>
+  <div class="gallery-item" data-cat="hari-at-work"><img src="gallery/2024-musikverein.jpg"         alt="Musikverein Wien 2024" loading="lazy" data-cap="2024 · Musikverein Wien"></div>
+  <div class="gallery-item" data-cat="hari-at-work"><img src="gallery/2024-berliner-philharmoniker.jpg"   alt="Berliner Philharmoniker" loading="lazy" data-cap="2024 · Berliner Philharmoniker"></div>
+  <div class="gallery-item" data-cat="hari-at-work"><img src="gallery/2024-berliner-philharmoniker-2.jpg" alt="Berliner Philharmoniker" loading="lazy" data-cap="2024 · Berliner Philharmoniker"></div>
+  <div class="gallery-item" data-cat="hari-at-work"><img src="gallery/2024-lotte-concert-hall.jpg"   alt="Lotte Concert Hall" loading="lazy" data-cap="2024 · Lotte Concert Hall, Seoul"></div>
+  <div class="gallery-item" data-cat="hari-at-work"><img src="gallery/2024-lotte-concert-hall-1.jpg" alt="Lotte Concert Hall" loading="lazy" data-cap="2024 · Lotte Concert Hall, Seoul"></div>
+  <div class="gallery-item" data-cat="hari-at-work"><img src="gallery/2025-bavarian-studio-muenchen.jpg"     alt="Bavaria Studios" loading="lazy" data-cap="2025 · Bavaria Studios, München"></div>
+  <div class="gallery-item" data-cat="hari-at-work"><img src="gallery/2025-berliner-philharmoniker-4.jpg"   alt="Berliner Philharmoniker" loading="lazy" data-cap="2025 · Berliner Philharmoniker"></div>
+  <div class="gallery-item" data-cat="hari-at-work"><img src="gallery/2025-berliner-philharmoniker-6.jpg"   alt="Berliner Philharmoniker" loading="lazy" data-cap="2025 · Berliner Philharmoniker"></div>
+  <div class="gallery-item" data-cat="hari-at-work"><img src="gallery/2025-interview.jpg"            alt="Interview 2025"     loading="lazy" data-cap="2025 · Interview, Seoul"></div>
+  <div class="gallery-item" data-cat="hari-at-work"><img src="gallery/2025-kuehlhaus-berlin.jpg"     alt="Kühlhaus Berlin"    loading="lazy" data-cap="2025 · Kühlhaus, Berlin"></div>
+  <div class="gallery-item" data-cat="hari-at-work"><img src="gallery/2025-kuehlhaus-berlin-2.jpg"   alt="Kühlhaus Berlin"    loading="lazy" data-cap="2025 · Kühlhaus, Berlin"></div>
+  <div class="gallery-item" data-cat="hari-at-work"><img src="gallery/2025-seoul-art-center-2.jpg"   alt="Seoul Arts Center"  loading="lazy" data-cap="2025 · Seoul Arts Center"></div>
+  <div class="gallery-item" data-cat="hari-at-work"><img src="gallery/2026-deutsche-oper-berlin.jpg" alt="Deutsche Oper Berlin" loading="lazy" data-cap="2026 · Deutsche Oper Berlin"></div>
+  <div class="gallery-item" data-cat="hari-at-work"><img src="gallery/2026-cgimf-hanoi.jpg"          alt="CGIMF Hanoi"        loading="lazy" data-cap="2026 · CGIMF, Hanoi"></div>
+  <div class="gallery-item" data-cat="hari-at-work"><img src="gallery/2026-cgimf-hanoi-2.jpg"        alt="CGIMF Hanoi"        loading="lazy" data-cap="2026 · CGIMF, Hanoi"></div>
+  <div class="gallery-item" data-cat="hari-at-work"><img src="gallery/2026-berlin.jpg"               alt="Berlin 2026"        loading="lazy" data-cap="2026 · Berlin"></div>
+
+  <!-- HALLS & SETUP -->
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2017-japan-1.jpg"              alt="Japan 2017"         loading="lazy" data-cap="2017 · Japan"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2017-japan-2.jpg"              alt="Japan 2017"         loading="lazy" data-cap="2017 · Japan"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2017-japan-3.jpg"              alt="Japan 2017"         loading="lazy" data-cap="2017 · Japan"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2017-reduta-hall-slowakai.jpg" alt="Reduta Hall"        loading="lazy" data-cap="2017 · Reduta Hall, Slovakia"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2018-oper-am-rhein.jpg"        alt="Oper am Rhein"      loading="lazy" data-cap="2018 · Deutsche Oper am Rhein"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2019-69-festival-junger-kuenstler-bayreuth-germany.jpg" alt="Festival Bayreuth" loading="lazy" data-cap="2019 · Festival junger Künstler, Bayreuth"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2019-historische-stadthalle-wuppertal-germany-1.jpg" alt="Historische Stadthalle" loading="lazy" data-cap="2019 · Historische Stadthalle, Wuppertal"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2019-historische-stadthalle-wuppertal-germany-2.jpg" alt="Historische Stadthalle" loading="lazy" data-cap="2019 · Historische Stadthalle, Wuppertal"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2019-kunst-station-sankt-peter-cologne-germany.jpg"  alt="Kunst-Station Sankt Peter" loading="lazy" data-cap="2019 · Kunst-Station Sankt Peter, Cologne"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2019-mercatorhalle-duisburg-germany.jpg"              alt="Mercatorhalle Duisburg"     loading="lazy" data-cap="2019 · Mercatorhalle, Duisburg"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2019-sankt-adolfus-kirche-duesseldorf-germany.jpg"   alt="Sankt Adolfus Kirche"       loading="lazy" data-cap="2019 · Sankt Adolfus Kirche, Düsseldorf"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2019-staedtische-musikschule-ratingen-germany.jpg"   alt="Städtische Musikschule"     loading="lazy" data-cap="2019 · Städtische Musikschule, Ratingen"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2019-stradium-seoul-korea.jpg"                        alt="Stradium Seoul"             loading="lazy" data-cap="2019 · Stradium, Seoul"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2019-tenri-japanisch-deutsche-kulturwerkstatt-e-v-cologne-germany.jpg" alt="Tenri Cologne" loading="lazy" data-cap="2019 · Tenri Kulturwerkstatt, Cologne"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2019-trinitatiskirchengemeinde-bonn-germany.jpg"     alt="Trinitatiskirche Bonn"      loading="lazy" data-cap="2019 · Trinitatiskirche, Bonn"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2020-jcc-artcenter-seoul-korea.jpg"                   alt="JCC Art Center"             loading="lazy" data-cap="2020 · JCC Art Center, Seoul"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2020-music-tent-korea.jpg"                            alt="Music Tent Korea"           loading="lazy" data-cap="2020 · Music Tent, Korea"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2020-neanderkirche-duesseldorf-germany.jpg"           alt="Neanderkirche"              loading="lazy" data-cap="2020 · Neanderkirche, Düsseldorf"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2020-national-asian-culture-center-korea.jpg"        alt="National Asian Culture Center" loading="lazy" data-cap="2020 · National Asian Culture Center, Gwangju"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2020-orchesterzentrum-nrw-dortmund-germany.jpg"       alt="Orchesterzentrum NRW"       loading="lazy" data-cap="2020 · Orchesterzentrum NRW, Dortmund"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2020-shigeru-kawai-germany.jpg"                       alt="Shigeru Kawai"              loading="lazy" data-cap="2020 · Shigeru Kawai, Germany"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2021-auferstehungskirche-evangelische-kirchengemeinde-duesseldorf-germany.jpg" alt="Auferstehungskirche" loading="lazy" data-cap="2021 · Auferstehungskirche, Düsseldorf"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2021-flagey-brussel-belgium.jpg"                      alt="Flagey Brussels"            loading="lazy" data-cap="2021 · Flagey, Brussels"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2021-gewandhaus-mendelssohn-saal-leipzig-germany.jpg" alt="Gewandhaus Leipzig"         loading="lazy" data-cap="2021 · Gewandhaus, Leipzig"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2021-lohmar-honrath-kirche.jpg"                       alt="Honrath Kirche"             loading="lazy" data-cap="2021 · Honrath Kirche, Lohmar"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2022-historische-stadthalle-wuppertal-germany.jpg"   alt="Historische Stadthalle"     loading="lazy" data-cap="2022 · Historische Stadthalle, Wuppertal"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2022-oelbergkirche-berlin-germany.jpg"                alt="Ölbergkirche Berlin"        loading="lazy" data-cap="2022 · Ölbergkirche, Berlin"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2023-georg-friedrich-haendel-halle-germany.jpg"       alt="Händel-Halle"               loading="lazy" data-cap="2023 · Georg-Friedrich-Händel-Halle"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2023-konzerthaus-berlin-germany.jpg"                  alt="Konzerthaus Berlin"         loading="lazy" data-cap="2023 · Konzerthaus Berlin"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2023-musikverein-wien-austria.jpg"                    alt="Musikverein Wien"           loading="lazy" data-cap="2023 · Musikverein Wien"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2023-palais-lichtenau-potsdam-germany.jpg"            alt="Palais Lichtenau Potsdam"   loading="lazy" data-cap="2023 · Palais Lichtenau, Potsdam"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2024-beethoven-festival-bonn-germany.jpg"             alt="Beethoven Festival Bonn"    loading="lazy" data-cap="2024 · Beethoven Festival, Bonn"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2024-national-theater-seoul-korea.jpg"                alt="National Theater Seoul"     loading="lazy" data-cap="2024 · National Theater, Seoul"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2024-opera-leipzig-germany.jpg"                       alt="Oper Leipzig"               loading="lazy" data-cap="2024 · Oper Leipzig"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2024-palais-de-la-musique-et-des-congres-strasbourg-france.jpg" alt="Palais de la Musique Strasbourg" loading="lazy" data-cap="2024 · Palais de la Musique, Strasbourg"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2024-queen-elisabeth-music-chapel-belgium.jpg"        alt="Queen Elisabeth Music Chapel" loading="lazy" data-cap="2024 · Queen Elisabeth Music Chapel"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2024-richard-jakoby-saal-hannover-germany.jpg"        alt="Richard-Jakoby-Saal"        loading="lazy" data-cap="2024 · Richard-Jakoby-Saal, Hannover"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2024-theater-putbus.jpg"                              alt="Theater Putbus"             loading="lazy" data-cap="2024 · Theater Putbus"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2025-aramnuri-goyang-korea.jpg"                       alt="Aramnuri Goyang"            loading="lazy" data-cap="2025 · Aramnuri, Goyang"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2025-bavaria-studios-muenchen-germany.jpg"            alt="Bavaria Studios München"    loading="lazy" data-cap="2025 · Bavaria Studios, München"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2025-bavaria-studios-muenchen-germany-2.jpg"          alt="Bavaria Studios München"    loading="lazy" data-cap="2025 · Bavaria Studios, München"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2025-bucheon-art-center-korea.jpg"                    alt="Bucheon Arts Center"        loading="lazy" data-cap="2025 · Bucheon Arts Center"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2025-dekelboum-concert-hall-maryland-usa.jpg"         alt="Dekelboum Concert Hall"     loading="lazy" data-cap="2025 · Dekelboum Concert Hall, Maryland"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2025-ehem-st-martinus-kirche-hagen-germany.jpg"       alt="St. Martinus-Kirche Hagen"  loading="lazy" data-cap="2025 · Ehem. St. Martinus-Kirche, Hagen"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2025-emil-berliner-studio-berlin-germany.jpg"         alt="Emil Berliner Studios"      loading="lazy" data-cap="2025 · Emil Berliner Studios, Berlin"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2025-incheon-art-center-korea.jpg"                    alt="Incheon Art Center"         loading="lazy" data-cap="2025 · Incheon Art Center"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2025-jesus-christus-kirche-berlin-germany.jpg"        alt="Jesus-Christus-Kirche"      loading="lazy" data-cap="2025 · Jesus-Christus-Kirche, Berlin"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2025-matthaeuskirche-berlin-germany.jpg"              alt="Matthäuskirche Berlin"      loading="lazy" data-cap="2025 · Matthäuskirche, Berlin"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2025-poeun-art-hall-korea.jpg"                        alt="Poeun Art Hall"             loading="lazy" data-cap="2025 · Poeun Art Hall, Korea"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2025-seoul-art-center.jpg"                            alt="Seoul Arts Center"          loading="lazy" data-cap="2025 · Seoul Arts Center"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2025-simsan-art-hall-korea.jpg"                       alt="Simsan Art Hall"            loading="lazy" data-cap="2025 · Simsan Art Hall, Korea"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2025-staatsoper-berlin-germany.jpg"                   alt="Staatsoper Berlin"          loading="lazy" data-cap="2025 · Staatsoper Berlin"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2025-villa-elisabeth-berlin-germany.jpg"              alt="Villa Elisabeth Berlin"     loading="lazy" data-cap="2025 · Villa Elisabeth, Berlin"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2025-villa-elisabeth-berlin-germany-2.jpg"            alt="Villa Elisabeth Berlin"     loading="lazy" data-cap="2025 · Villa Elisabeth, Berlin"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2026-anyang-art-center.jpg"                           alt="Anyang Arts Center"         loading="lazy" data-cap="2026 · Anyang Arts Center"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2026-bucheon-art-center-korea.jpg"                    alt="Bucheon Arts Center"        loading="lazy" data-cap="2026 · Bucheon Arts Center"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2026-deutsche-oper-berlin-germany.jpg"                alt="Deutsche Oper Berlin"       loading="lazy" data-cap="2026 · Deutsche Oper Berlin"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2026-festspielhaus-salzburg-austria.jpg"              alt="Festspielhaus Salzburg"     loading="lazy" data-cap="2026 · Festspielhaus, Salzburg"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2026-ibk-chamber-hall-korea.jpg"                      alt="IBK Chamber Hall"           loading="lazy" data-cap="2026 · IBK Chamber Hall, Korea"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2026-konzerthaus-berlin-germany.jpg"                  alt="Konzerthaus Berlin"         loading="lazy" data-cap="2026 · Konzerthaus Berlin"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2026-montecastelli-italia-1.jpg"                      alt="Montecastelli Pisano"       loading="lazy" data-cap="2026 · Montecastelli Pisano, Italy"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2026-montecastelli-italia-2.jpg"                      alt="Montecastelli Pisano"       loading="lazy" data-cap="2026 · Montecastelli Pisano, Italy"></div>
+  <div class="gallery-item" data-cat="halls-setup"><img src="gallery/2026-montecastelli-italia-3.jpg"                      alt="Montecastelli Pisano"       loading="lazy" data-cap="2026 · Montecastelli Pisano, Italy"></div>
+
+  <!-- ALWAYS LAST -->
+  <div class="gallery-item" data-cat="hari-at-work halls-setup" data-special="bottom">
+    <img src="gallery/aes-bronze-winner.jpg" alt="AES Bronze Award" loading="lazy" data-cap="AES 150th Convention · Bronze Award — Traditional Acoustic Recording">
+  </div>
+
+</main>
+
+<!-- ══════════════════════════════════════
+     RECORDING LOCATIONS MAP
+══════════════════════════════════════ -->
+<section class="map-section">
+  <div class="map-section-header">
+    <h2 data-i18n="map_title">Recording Locations</h2>
+    <p data-i18n="map_sub">29 cities across 12 countries</p>
+  </div>
+  <div id="loc-map"></div>
+  <div class="map-footer">
+    <span class="map-stat" data-i18n="map_stat"><strong>29</strong> cities &nbsp;·&nbsp; <strong>12</strong> countries &nbsp;·&nbsp; <strong>4</strong> continents</span>
+    <span class="map-stat" style="font-size:0.55rem">Map © <a href="https://stadia.com" style="color:inherit">Stadia Maps</a>, © <a href="https://openmaptiles.org" style="color:inherit">OpenMapTiles</a>, © <a href="https://openstreetmap.org" style="color:inherit">OpenStreetMap</a></span>
+  </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div id="lb">
+  <button class="lb-x">×</button>
+  <button class="lb-arr" id="lb-prev">←</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-arr" id="lb-next">→</button>
+  <div id="lb-cap"></div>
+</div>
+
+<script src="https://unpkg.com/maplibre-gl@4/dist/maplibre-gl.js"></script>
+<script>
+/* ── i18n ── */
+const I18N = {
+  en:{ nav_work:'Work', nav_about:'About', nav_gallery:'Gallery', nav_contact:'Contact',
+       page_title:'Gallery', page_sub:'Recording sessions, concert halls & studio work',
+       f_all:'All', f_work:'Hari at Work', f_halls:'Halls & Setup',
+       map_title:'Recording Locations', map_sub:'29 cities across 12 countries',
+       map_stat:'<strong>29</strong> cities &nbsp;·&nbsp; <strong>12</strong> countries &nbsp;·&nbsp; <strong>4</strong> continents' },
+  ko:{ nav_work:'작업', nav_about:'소개', nav_gallery:'갤러리', nav_contact:'연락',
+       page_title:'갤러리', page_sub:'레코딩 세션, 콘서트홀 & 스튜디오 현장',
+       f_all:'전체', f_work:'작업 현장', f_halls:'홀 & 셋업',
+       map_title:'레코딩 장소', map_sub:'12개국 29개 도시',
+       map_stat:'<strong>29</strong>개 도시 &nbsp;·&nbsp; <strong>12</strong>개국 &nbsp;·&nbsp; <strong>4</strong>개 대륙' },
+  de:{ nav_work:'Arbeit', nav_about:'Über', nav_gallery:'Galerie', nav_contact:'Kontakt',
+       page_title:'Galerie', page_sub:'Aufnahmen, Konzertsäle & Studioarbeit',
+       f_all:'Alle', f_work:'Hari bei der Arbeit', f_halls:'Säle & Setup',
+       map_title:'Aufnahmeorte', map_sub:'29 Städte in 12 Ländern',
+       map_stat:'<strong>29</strong> Städte &nbsp;·&nbsp; <strong>12</strong> Länder &nbsp;·&nbsp; <strong>4</strong> Kontinente' },
+};
+let lang = 'en';
+function setLang(l) {
+  lang = l;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const v = I18N[l][el.dataset.i18n];
+    if (v) el.innerHTML = v;
+  });
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent.trim().toLowerCase() === l));
+  document.documentElement.lang = l;
+}
+
+/* ── filter ── */
+const items   = Array.from(document.querySelectorAll('.gallery-item'));
+const bottom  = document.querySelector('[data-special="bottom"]');
+const grid    = document.getElementById('gallery');
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const f = btn.dataset.filter;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    items.forEach(item => {
+      if (item === bottom) { item.classList.remove('hidden'); return; }
+      const cats = item.dataset.cat.split(' ');
+      item.classList.toggle('hidden', f !== 'all' && !cats.includes(f));
+    });
+    grid.appendChild(bottom);
+  });
+});
+
+/* ── lightbox ── */
+let lbItems = [], lbIdx = 0;
+
+function buildLbItems() {
+  lbItems = items.filter(i => !i.classList.contains('hidden'))
+    .map(i => ({ src: i.querySelector('img').src, cap: i.querySelector('img').dataset.cap || '' }));
+}
+
+items.forEach((item, i) => {
+  item.addEventListener('click', () => {
+    buildLbItems();
+    lbIdx = lbItems.findIndex(x => x.src === item.querySelector('img').src);
+    showLb();
+    document.getElementById('lb').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+});
+
+function showLb() {
+  const p = lbItems[lbIdx];
+  document.getElementById('lb-img').src = p.src;
+  document.getElementById('lb-cap').textContent = p.cap;
+}
+function closeLb() {
+  document.getElementById('lb').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.querySelector('.lb-x').onclick = closeLb;
+document.getElementById('lb-prev').onclick = () => { lbIdx = (lbIdx - 1 + lbItems.length) % lbItems.length; showLb(); };
+document.getElementById('lb-next').onclick = () => { lbIdx = (lbIdx + 1) % lbItems.length; showLb(); };
+document.getElementById('lb').addEventListener('click', e => { if (e.target.id === 'lb') closeLb(); });
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('lb').classList.contains('open')) return;
+  if (e.key === 'Escape')      closeLb();
+  if (e.key === 'ArrowLeft')  { lbIdx = (lbIdx - 1 + lbItems.length) % lbItems.length; showLb(); }
+  if (e.key === 'ArrowRight') { lbIdx = (lbIdx + 1) % lbItems.length; showLb(); }
+});
+
+/* ── MAP ── */
+const PINS = [
+  {n:'Düsseldorf',   co:'Germany',  lng:6.773,   lat:51.227},
+  {n:'Essen',        co:'Germany',  lng:7.011,   lat:51.455},
+  {n:'Duisburg',     co:'Germany',  lng:6.762,   lat:51.435},
+  {n:'Wuppertal',    co:'Germany',  lng:7.150,   lat:51.257},
+  {n:'Remscheid',    co:'Germany',  lng:7.190,   lat:51.180},
+  {n:'Ratingen',     co:'Germany',  lng:6.849,   lat:51.297},
+  {n:'Cologne',      co:'Germany',  lng:6.960,   lat:50.938},
+  {n:'Bonn',         co:'Germany',  lng:7.099,   lat:50.735},
+  {n:'Lohmar',       co:'Germany',  lng:7.212,   lat:50.840},
+  {n:'Bayreuth',     co:'Germany',  lng:11.578,  lat:49.945},
+  {n:'Erlangen',     co:'Germany',  lng:11.004,  lat:49.598},
+  {n:'München',      co:'Germany',  lng:11.576,  lat:48.137},
+  {n:'Dortmund',     co:'Germany',  lng:7.465,   lat:51.514},
+  {n:'Hagen',        co:'Germany',  lng:7.474,   lat:51.358},
+  {n:'Hannover',     co:'Germany',  lng:9.732,   lat:52.375},
+  {n:'Halle (Saale)',co:'Germany',  lng:11.970,  lat:51.483},
+  {n:'Leipzig',      co:'Germany',  lng:12.375,  lat:51.340},
+  {n:'Berlin',       co:'Germany',  lng:13.405,  lat:52.520},
+  {n:'Potsdam',      co:'Germany',  lng:13.065,  lat:52.390},
+  {n:'Putbus',       co:'Germany',  lng:13.479,  lat:54.362},
+  {n:'Wien',         co:'Austria',  lng:16.373,  lat:48.208},
+  {n:'Salzburg',     co:'Austria',  lng:13.047,  lat:47.797},
+  {n:'Brussels',     co:'Belgium',  lng:4.352,   lat:50.850},
+  {n:'Strasbourg',   co:'France',   lng:7.752,   lat:48.573},
+  {n:'Bratislava',   co:'Slovakia', lng:17.107,  lat:48.148},
+  {n:'Montecastelli',co:'Italy',    lng:10.960,  lat:43.155},
+  {n:'Japan',        co:'Japan',    lng:137.000, lat:35.500},
+  {n:'Seoul',        co:'Korea',    lng:126.978, lat:37.566},
+  {n:'Gyeonggi-do',  co:'Korea',    lng:126.790, lat:37.490},
+  {n:'Gwangju',      co:'Korea',    lng:126.852, lat:35.158},
+  {n:'Maryland',     co:'USA',      lng:-76.938, lat:38.989},
+  {n:'Hanoi',        co:'Vietnam',  lng:105.834, lat:21.028},
+];
+
+const mapEl = document.getElementById('loc-map');
+let mapInit = false;
+
+// lazy-init: only load map when scrolled into view
+const obs = new IntersectionObserver(entries => {
+  if (entries[0].isIntersecting && !mapInit) { mapInit = true; initMap(); }
+}, { threshold: 0.1 });
+obs.observe(mapEl);
+
+function initMap() {
+  const m = new maplibregl.Map({
+    container: 'loc-map',
+    style: 'https://tiles.stadiamaps.com/styles/alidade_smooth_dark.json',
+    center: [20, 40], zoom: 2.2,
+    minZoom: 1, maxZoom: 10,
+    attributionControl: false,
+    scrollZoom: false,   // don't hijack page scroll
+  });
+
+  m.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
+
+  const popup = new maplibregl.Popup({ closeButton: false, closeOnClick: false, className: 'hy-popup', offset: 10 });
+
+  m.on('load', () => {
+    m.addSource('pts', {
+      type: 'geojson',
+      data: {
+        type: 'FeatureCollection',
+        features: PINS.map(p => ({
+          type: 'Feature',
+          geometry: { type: 'Point', coordinates: [p.lng, p.lat] },
+          properties: { name: p.n, country: p.co }
+        }))
+      }
+    });
+
+    m.addLayer({ id:'pt-glow', type:'circle', source:'pts', paint:{
+      'circle-color':'rgba(200,169,122,0.1)', 'circle-radius':11, 'circle-stroke-width':0
+    }});
+    m.addLayer({ id:'pt-dot', type:'circle', source:'pts', paint:{
+      'circle-color':'#c8a97a', 'circle-radius':4,
+      'circle-stroke-width':1.5, 'circle-stroke-color':'rgba(240,228,200,0.65)'
+    }});
+
+    m.on('mouseenter', 'pt-dot', e => {
+      m.getCanvas().style.cursor = 'pointer';
+      const { name, country } = e.features[0].properties;
+      popup.setLngLat(e.features[0].geometry.coordinates)
+        .setHTML(`<span class="pp-n">${name}</span><span class="pp-m">${country}</span>`)
+        .addTo(m);
+    });
+    m.on('mouseleave', 'pt-dot', () => { m.getCanvas().style.cursor = ''; popup.remove(); });
+
+    // enable scroll zoom only when cursor is inside the map
+    mapEl.addEventListener('mouseenter', () => m.scrollZoom.enable());
+    mapEl.addEventListener('mouseleave', () => m.scrollZoom.disable());
+  });
+
+  // inject popup CSS once
+  const s = document.createElement('style');
+  s.textContent = `
+    .maplibregl-popup-content{background:rgba(12,12,12,.93)!important;border:1px solid #2a2620!important;border-radius:0!important;box-shadow:0 4px 16px rgba(0,0,0,.5)!important;backdrop-filter:blur(8px);padding:6px 11px!important}
+    .maplibregl-popup-tip{display:none!important}
+    .pp-n{display:block;font-family:'EB Garamond',serif;font-style:italic;font-size:.92rem;color:#e2ddd5}
+    .pp-m{display:block;font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.06em;color:#6a6460;margin-top:1px}
+    .maplibregl-ctrl button{background:rgba(12,12,12,.8)!important;border:1px solid #222!important}
+    .maplibregl-ctrl button span{filter:invert(.6)!important}
+  `;
+  document.head.appendChild(s);
+}
+</script>
+</body>
+</html>
