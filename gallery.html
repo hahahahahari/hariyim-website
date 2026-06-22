@@ -300,11 +300,11 @@
 <section class="map-section">
   <div class="map-section-header">
     <h2 data-i18n="map_title">Recording Locations</h2>
-    <p data-i18n="map_sub">29 cities across 12 countries</p>
+    <p data-i18n="map_sub">45 cities across 14 countries</p>
   </div>
   <div id="loc-map"></div>
   <div class="map-footer">
-    <span class="map-stat" data-i18n="map_stat"><strong>29</strong> cities &nbsp;·&nbsp; <strong>12</strong> countries &nbsp;·&nbsp; <strong>4</strong> continents</span>
+    <span class="map-stat" data-i18n="map_stat"><strong>45</strong> cities &nbsp;·&nbsp; <strong>14</strong> countries &nbsp;·&nbsp; <strong>4</strong> continents</span>
     <span class="map-stat" style="font-size:0.55rem">Map © <a href="https://stadia.com" style="color:inherit">Stadia Maps</a>, © <a href="https://openmaptiles.org" style="color:inherit">OpenMapTiles</a>, © <a href="https://openstreetmap.org" style="color:inherit">OpenStreetMap</a></span>
   </div>
 </section>
@@ -325,18 +325,18 @@ const I18N = {
   en:{ nav_work:'Work', nav_about:'About', nav_gallery:'Gallery', nav_contact:'Contact',
        page_title:'Gallery', page_sub:'Recording sessions, concert halls & studio work',
        f_all:'All', f_work:'Hari at Work', f_halls:'Halls & Setup',
-       map_title:'Recording Locations', map_sub:'29 cities across 12 countries',
-       map_stat:'<strong>29</strong> cities &nbsp;·&nbsp; <strong>12</strong> countries &nbsp;·&nbsp; <strong>4</strong> continents' },
+       map_title:'Recording Locations', map_sub:'45 cities across 14 countries',
+       map_stat:'<strong>45</strong> cities &nbsp;·&nbsp; <strong>14</strong> countries &nbsp;·&nbsp; <strong>4</strong> continents' },
   ko:{ nav_work:'작업', nav_about:'소개', nav_gallery:'갤러리', nav_contact:'연락',
        page_title:'갤러리', page_sub:'레코딩 세션, 콘서트홀 & 스튜디오 현장',
        f_all:'전체', f_work:'작업 현장', f_halls:'홀 & 셋업',
-       map_title:'레코딩 장소', map_sub:'12개국 29개 도시',
-       map_stat:'<strong>29</strong>개 도시 &nbsp;·&nbsp; <strong>12</strong>개국 &nbsp;·&nbsp; <strong>4</strong>개 대륙' },
+       map_title:'레코딩 장소', map_sub:'14개국 45개 도시',
+       map_stat:'<strong>45</strong>개 도시 &nbsp;·&nbsp; <strong>14</strong>개국 &nbsp;·&nbsp; <strong>4</strong>개 대륙' },
   de:{ nav_work:'Arbeit', nav_about:'Über', nav_gallery:'Galerie', nav_contact:'Kontakt',
        page_title:'Galerie', page_sub:'Aufnahmen, Konzertsäle & Studioarbeit',
        f_all:'Alle', f_work:'Hari bei der Arbeit', f_halls:'Säle & Setup',
-       map_title:'Aufnahmeorte', map_sub:'29 Städte in 12 Ländern',
-       map_stat:'<strong>29</strong> Städte &nbsp;·&nbsp; <strong>12</strong> Länder &nbsp;·&nbsp; <strong>4</strong> Kontinente' },
+       map_title:'Aufnahmeorte', map_sub:'45 Städte in 14 Ländern',
+       map_stat:'<strong>45</strong> Städte &nbsp;·&nbsp; <strong>14</strong> Länder &nbsp;·&nbsp; <strong>4</strong> Kontinente' },
 };
 let lang = 'en';
 function setLang(l) {
@@ -435,12 +435,25 @@ const PINS = [
   {n:'Strasbourg',   co:'France',   lng:7.752,   lat:48.573},
   {n:'Bratislava',   co:'Slovakia', lng:17.107,  lat:48.148},
   {n:'Montecastelli',co:'Italy',    lng:10.960,  lat:43.155},
-  {n:'Japan',        co:'Japan',    lng:137.000, lat:35.500},
+  {n:'Tokyo',        co:'Japan',    lng:139.691, lat:35.689},
+  {n:'Kyoto',        co:'Japan',    lng:135.768, lat:35.012},
+  {n:'Tsukuba',      co:'Japan',    lng:140.112, lat:36.083},
   {n:'Seoul',        co:'Korea',    lng:126.978, lat:37.566},
   {n:'Gyeonggi-do',  co:'Korea',    lng:126.790, lat:37.490},
   {n:'Gwangju',      co:'Korea',    lng:126.852, lat:35.158},
   {n:'Maryland',     co:'USA',      lng:-76.938, lat:38.989},
   {n:'Hanoi',        co:'Vietnam',  lng:105.834, lat:21.028},
+  {n:'Waterloo',     co:'Belgium',  lng:4.399,   lat:50.719},
+  {n:'Brno',         co:'Czech Republic', lng:16.608, lat:49.195},
+  {n:'Montreux',     co:'Switzerland', lng:6.911, lat:46.433},
+  {n:'Puidoux',      co:'Switzerland', lng:6.841, lat:46.516},
+  {n:'Paris',        co:'France',   lng:2.347,   lat:48.859},
+  {n:'Rennes',       co:'France',   lng:-1.678,  lat:48.117},
+  {n:'Augsburg',     co:'Germany',  lng:10.898,  lat:48.371},
+  {n:'Würzburg',     co:'Germany',  lng:9.937,   lat:49.795},
+  {n:'Bochum',       co:'Germany',  lng:7.215,   lat:51.482},
+  {n:'Aachen',       co:'Germany',  lng:6.084,   lat:50.776},
+  {n:'Saarbrücken',  co:'Germany',  lng:6.997,   lat:49.234},
 ];
 
 const mapEl = document.getElementById('loc-map');
