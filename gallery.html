@@ -111,8 +111,8 @@
     #lb-prev { left: 0.5rem; }
     #lb-next { right: 0.5rem; }
     #lb-cap {
-      position: fixed; bottom: 1.2rem; left: 50%; transform: translateX(-50%); z-index: 901;
-      font-family: var(--font-m); font-size: 0.6rem; letter-spacing: 0.07em; color: var(--muted); white-space: nowrap;
+      position: fixed; bottom: 1.4rem; left: 50%; transform: translateX(-50%); z-index: 901;
+      font-family: var(--font-m); font-size: 0.82rem; letter-spacing: 0.07em; color: var(--text); white-space: nowrap;
     }
 
     /* responsive */
@@ -455,7 +455,7 @@ obs.observe(mapEl);
 function initMap() {
   const m = new maplibregl.Map({
     container: 'loc-map',
-    style: 'https://tiles.stadiamaps.com/styles/alidade_smooth_dark.json',
+    style: 'https://tiles.openfreemap.org/styles/dark',
     center: [20, 40], zoom: 2.2,
     minZoom: 1, maxZoom: 10,
     attributionControl: false,
