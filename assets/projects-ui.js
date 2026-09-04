@@ -59,7 +59,7 @@ const PROJECT_IMAGES = {
 function renderFeatured() {
   const host = document.querySelector('[data-featured-projects]');
   if (!host || !window.HARI_PROJECTS) return;
-  const featured = HARI_PROJECTS.filter(p => p.featured).slice(0,9);
+  const featured = HARI_PROJECTS.filter(p => p.featured).sort((a,b) => a.featuredOrder - b.featuredOrder).slice(0,9);
   host.innerHTML = featured.map(p => `
     <a class="project-card" href="${p.link || 'work.html'}" ${p.link ? 'target="_blank" rel="noopener"' : ''}>
       <div>
