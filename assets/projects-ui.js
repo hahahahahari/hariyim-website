@@ -59,7 +59,18 @@ const PROJECT_IMAGES = {
 function renderFeatured() {
   const host = document.querySelector('[data-featured-projects]');
   if (!host || !window.HARI_PROJECTS) return;
-  const featured = HARI_PROJECTS.filter(p => p.featured).sort((a,b) => a.featuredOrder - b.featuredOrder).slice(0,9);
+  const homeSelection = [
+    'Bach: The Six Cello Suites',
+    'WDR Sinfonieorchester Köln',
+    'Beethoven Violin Sonata Complete Series I',
+    'Michiaki Ueno: Origin',
+    'Waldensemble: Festive Wald 10th Anniversary',
+    'Waldensemble: SLAVIC',
+    'V. Vakulenko / E. Orkin “Daddy’s Book”',
+    'Tafelmusik x Rachel Podger — 35th Eagonconcert',
+    'Spielende Insel — Chambermusic Project Berlin'
+  ];
+  const featured = homeSelection.map(title => HARI_PROJECTS.find(p => p.title === title)).filter(Boolean);
   host.innerHTML = featured.map(p => `
     <a class="project-card" href="${p.link || 'work.html'}" ${p.link ? 'target="_blank" rel="noopener"' : ''}>
       <div>
