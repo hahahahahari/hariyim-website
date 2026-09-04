@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gallery — Hari Yim</title>
+  <meta name="description" content="Recording sessions, concert halls and studio work by classical recording producer Hari Yim.">
+  <link rel="canonical" href="https://hariyim.com/gallery.html">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -66,7 +68,7 @@
     .gallery-item.hidden { display: none; }
 
     /* ── MAP SECTION ── */
-    .map-section {
+    .map-section { display: none;
       border-top: 1px solid var(--border);
       padding: 3rem 2.5rem 0;
     }
@@ -157,7 +159,7 @@
   <a href="index.html" class="nav-logo">Hari Yim</a>
   <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')"><span></span><span></span><span></span></button>
   <ul class="nav-links">
-    <li><a href="index.html"   data-i18n="nav_work">Work</a></li>
+    <li><a href="index.html#projects" data-i18n="nav_work">Work</a></li>
     <li><a href="about.html"   data-i18n="nav_about">About</a></li>
     <li><a href="gallery.html" data-i18n="nav_gallery" class="active">Gallery</a></li>
     <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
@@ -332,7 +334,7 @@ const I18N = {
        f_all:'전체', f_work:'작업 현장', f_halls:'홀 & 셋업',
        map_title:'레코딩 장소', map_sub:'14개국 45개 도시',
        map_stat:'<strong>45</strong>개 도시 &nbsp;·&nbsp; <strong>14</strong>개국 &nbsp;·&nbsp; <strong>4</strong>개 대륙' },
-  de:{ nav_work:'Arbeit', nav_about:'Über', nav_gallery:'Galerie', nav_contact:'Kontakt',
+  de:{ nav_work:'Projekte', nav_about:'Über mich', nav_gallery:'Galerie', nav_contact:'Kontakt',
        page_title:'Galerie', page_sub:'Aufnahmen, Konzertsäle & Studioarbeit',
        f_all:'Alle', f_work:'Hari bei der Arbeit', f_halls:'Säle & Setup',
        map_title:'Aufnahmeorte', map_sub:'45 Städte in 14 Ländern',
@@ -347,7 +349,9 @@ function setLang(l) {
   });
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent.trim().toLowerCase() === l));
   document.documentElement.lang = l;
+  localStorage.setItem('hari-lang', l);
 }
+setLang(localStorage.getItem('hari-lang') || 'en');
 
 /* ── filter ── */
 const items   = Array.from(document.querySelectorAll('.gallery-item'));
