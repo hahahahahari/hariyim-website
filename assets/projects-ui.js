@@ -79,7 +79,7 @@ function renderFeatured() {
         <h3>${escapeHTML(p.title)}</h3>
         <div class="project-artist">${escapeHTML(p.artist.split('\n').slice(0,3).join('\n'))}</div>
       </div>
-      <div class="project-foot"><span class="project-label">${p.label === '—' ? p.roleLabel : escapeHTML(p.label)}</span><span class="project-action">${p.link ? actionLabel(p) : 'Details ↗'}</span></div>
+      <div class="project-foot"><span class="project-label">${escapeHTML(p.label || '—')}</span><span class="project-action">${p.link ? actionLabel(p) : 'Details ↗'}</span></div>
     </a>
   `).join('');
 }
@@ -105,7 +105,7 @@ function renderWork() {
         <div class="work-year">${escapeHTML(p.year)}</div>
         <div class="work-title">${p.note ? `<small class="work-note">${escapeHTML(p.note)}</small>` : ''}${escapeHTML(p.title)} <span class="open-link">＋</span></div>
         <div class="work-artist">${escapeHTML(p.artist.split('\n').slice(0,3).join('\n'))}</div>
-        <div class="work-label">${p.label === '—' ? escapeHTML(p.roleLabel) : escapeHTML(p.label)}</div>
+        <div class="work-label">${escapeHTML(p.label || '—')}</div>
         <div class="work-format">${escapeHTML(p.format)}</div>
       </button>
       <div class="work-detail" hidden>${PROJECT_IMAGES[p.title] ? `<div class="work-detail-image"><img src="${PROJECT_IMAGES[p.title]}" alt="${escapeHTML(p.title)}" loading="lazy"></div>` : ''}<div><span>Role</span><strong>${escapeHTML(p.roleLabel)}</strong></div><div><span>Artist</span><strong>${escapeHTML(p.artist)}</strong></div><div class="work-detail-actions">${p.link ? `<a href="${p.link}" target="_blank" rel="noopener">${actionLabel(p)}</a>` : ''}</div></div>
