@@ -12,6 +12,9 @@ function actionLabel(p) {
 const PROJECT_IMAGES = {
   'Bach: The Six Cello Suites':'https://www.ladolcevolta.com/wp-content/uploads/2022/09/LDV115.6_COVER-300x300-1.webp',
   'WDR Sinfonieorchester Köln':'images/wdr.jpg',
+  'Eduard Resatsch: Reflections of Hope':'https://i.ytimg.com/vi/dKFCxojhEA4/hqdefault.jpg',
+  'Tableaux en miroirs':'https://shop.naxos.de/cdn/shop/files/0730099149532-Rachmaninow---Ravel--Tableaux-en-Miroirs-cover.webp?v=1795036951&width=1200',
+  'Mozart: Horn Concerto No. 4, K. 495':'https://i.ytimg.com/vi/MMjqU461WpI/hqdefault.jpg',
   'Beyond Romanticism':'https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e026f03680bc2047c4ff8eb6bc4',
   'Espresso Concert — Konzerthaus Berlin':'https://i.ytimg.com/vi/8n2k9EZZH5M/maxresdefault.jpg',
   'Wings of Renaissance':'https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/4a/db/ad/4adbad8f-ffae-9095-8042-23b191cc7004/4260330917478.png/600x600bb.jpg',
@@ -62,6 +65,9 @@ function renderFeatured() {
   const homeSelection = [
     'Bach: The Six Cello Suites',
     'WDR Sinfonieorchester Köln',
+    'Eduard Resatsch: Reflections of Hope',
+    'Tableaux en miroirs',
+    'Mozart: Horn Concerto No. 4, K. 495',
     'Beethoven Violin Sonata Complete Series I',
     'Michiaki Ueno: Origin',
     'Waldensemble: Festive Wald 10th Anniversary',
@@ -75,7 +81,7 @@ function renderFeatured() {
     <a class="project-card" href="${p.link || 'work.html'}" ${p.link ? 'target="_blank" rel="noopener"' : ''}>
       <div>
         <div class="project-meta"><span>${escapeHTML(p.year)}</span><span>${escapeHTML(p.format)}</span></div>
-        ${p.note ? `<div class="project-note">${escapeHTML(p.note)}</div>` : ''}
+        ${p.note || p.badge ? `<div class="project-note">${escapeHTML(p.note || p.badge)}</div>` : ''}
         <h3>${escapeHTML(p.title)}</h3>
         <div class="project-artist">${escapeHTML(p.artist.split('\n').slice(0,3).join('\n'))}</div>
       </div>
@@ -103,7 +109,7 @@ function renderWork() {
       <article class="work-entry">
       <button class="work-row" type="button" aria-expanded="false">
         <div class="work-year">${escapeHTML(p.year)}</div>
-        <div class="work-title">${p.note ? `<small class="work-note">${escapeHTML(p.note)}</small>` : ''}${escapeHTML(p.title)} <span class="open-link">＋</span></div>
+        <div class="work-title">${p.note ? `<small class="work-note">${escapeHTML(p.note)}</small>` : ''}${escapeHTML(p.title)} ${p.badge ? `<small class="work-badge">${escapeHTML(p.badge)}</small>` : ''} <span class="open-link">＋</span></div>
         <div class="work-artist">${escapeHTML(p.artist.split('\n').slice(0,3).join('\n'))}</div>
         <div class="work-label">${escapeHTML(p.label || '—')}</div>
         <div class="work-format">${escapeHTML(p.format)}</div>
