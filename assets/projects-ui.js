@@ -10,7 +10,7 @@ function actionLabel(p) {
 }
 
 const PROJECT_IMAGES = {
-  'Bach: The Six Cello Suites':'https://www.ladolcevolta.com/wp-content/uploads/2022/09/LDV115.6_COVER-300x300-1.webp',
+  'Bach: The Six Cello Suites':'https://kingeshop.jp/img/goods/L/f76dfdc2e4124ab3b4a8850a74fe7103.jpg',
   'WDR Sinfonieorchester Köln':'images/wdr.jpg',
   'Eduard Resatsch: Reflections of Hope':'https://i.ytimg.com/vi/dKFCxojhEA4/hqdefault.jpg',
   'Tableaux en miroirs':'https://shop.naxos.de/cdn/shop/files/0730099149532-Rachmaninow---Ravel--Tableaux-en-Miroirs-cover.webp?v=1795036951&width=1200',
